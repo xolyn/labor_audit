@@ -1,0 +1,25 @@
+Emergency exits/escape routes clearly marked 6269
+
+Are possible sources of ignition appropriately safeguarded? 6212
+Flammable materials safely stored 6225
+
+Does the employer comply with size requirements for escape routes? 1802
+
+Has the employer developed and trained workers on an emergency evacuation plan? 1802
+Has the employer elaborated and implemented an emergency plan? 119
+
+Are floors and corridors in line with legal requirements? 117
+
+Escape routes not obstructed 2503
+Are the emergency exits  unlocked during working hours, including overtime? 12
+
+Escape routes locked 2491
+
+Does the workplace have adequate stairways that can be used in case of emergency? 584
+Does the workplace have at least one adequate window exit per floor? 566
+
+---
+
+"Has the employer effectively trained workers and supervisor who work with or are responsible for hazardous chemicals?",
+"Has the employer effectively trained workers and supervisors who work with or are responsible for hazardous chemicals?",
+"Has the employer effectively trained workers who work with chemicals and hazardous substances?",
