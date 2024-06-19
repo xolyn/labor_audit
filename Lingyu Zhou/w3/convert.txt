@@ -1,0 +1,4 @@
+df=pd.read_stata("D://AuditItemsRaw.dta")
+df=df.drop(["year"],axis=1)
+df["ID"]=df.index
+df.to_csv("raw.csv",index=False,encoding="utf-8")
