@@ -51,7 +51,6 @@ if QCleaned=="does the factory have a valid business license?" & Country=="Jorda
 
 
 
-
 *********************************************************************************
 *****run these  in full to clean some CPs
 
