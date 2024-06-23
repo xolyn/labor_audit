@@ -42,7 +42,7 @@ sink("DID_FE_240623.txt")
 	# str(dt2$T2)
 
 	## REMOVE AFTER FIXING MISSING
-	dt2$pid[duplicated(dt2$pid)] # due to the 5 missing
+	# dt2$pid[duplicated(dt2$pid)] # due to the 5 missing
 	dt2 <- dt2[!is.na(dt2$yearforpanel),]
 
 
@@ -83,6 +83,7 @@ sink()
 			"T21","T1_ctry1:T1_ym1"
 			)
 		) + geom_vline(xintercept=0) + scale_colour_brewer(palette="Set1") + theme_bw() + labs(title="DiD by FE panel models")
+	ggsave("DID_FE_240623.png")
 
 
 
