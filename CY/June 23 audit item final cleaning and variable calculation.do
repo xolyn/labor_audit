@@ -146,3 +146,30 @@ label variable distantCPcompl "compliance % of distant Compliance Point far from
 ****merge with other datasets of independent variables and moderators
 
 
+
+
+
+****generate audit year-month variable
+
+gen auditdate=date(AssesmentDate,"DMY")
+
+format auditdate %td
+
+gen auditmonth=mofd(auditdate)
+
+format auditmonth %tm
+
+
+****dummy variable to indicate countries under public reporting
+gen reportedcnty=1 if Country=="Indonesia"
+replace reportedcnty=1 if Country=="Jordan"
+replace reportedcnty=1 if Country=="Vietnam"
+replace reportedcnty=1 if Country=="Nicaragua"
+replace reportedcnty=1 if Country=="Haiti"
+
+replace reportedcnty=0 if Country=="Cambodia"
+replace reportedcnty=0 if Country=="Bangladesh"
+
+
+
+
