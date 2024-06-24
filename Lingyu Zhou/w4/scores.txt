@@ -1,0 +1,150 @@
+Amazon  10
+Ross Stores  10
+Monsoon Accessorize  9
+Triumph  9
+Valentino  9
+Takko  9
+Armani  8
+Kohl's  8
+Michael Kors  7
+Express  7
+Sainsburys – Tu Clothing  7
+Calzedonia  6
+Forever 21  6
+Lacoste  6
+Anthropologie  6
+Urban Outfitters  6
+Neiman Marcus  6
+Aéropostale  5
+Sports Direct  5
+Carolina Herrera  5
+Ermenegildo Zegna  5
+Foot Locker  5
+Matalan   5
+Versace   4
+Diesel  4
+Marc Jacobs  3
+Tory Burch  3
+Chanel  3
+LL Bean  3
+Youngor  3
+ANTA Sports  2
+New York & Co.   2
+Claire's Accessories  2
+Dolce & Gabbana  1
+Brooks Brothers  1
+New Yorker  1
+Longchamp  0
+Max Mara  0
+Barney's New York  0
+Desigual  0
+Dior  0
+Heilan Home  0
+Jessica Simpson  0
+Liverpool  0
+Mexx  0
+s. Oliver  0
+Nine West  0
+Sandro   0
+Superdry  20
+Jack & Jones  20
+Vero Moda  20
+Salvatore Ferragamo  20
+Victoria's Secret  19
+GUESS?  19
+Mango  18
+Bloomingdale's  18
+Macy's  18
+TJ Maxx  18
+Nordstrom  17
+Russell Athletic  17
+Decathlon  17
+Falabella  16
+JCPenney  16
+Kik  16
+Fendi  15
+Cortefiel  15
+Costco – Kirkland Signature   15
+Lidl UK  15
+Miu Miu  15
+Prada  15
+American Eagle  15
+Louis Vuitton  15
+Abercrombie & Fitch  14
+Ralph Lauren  14
+J.Crew  13
+Monoprix  13
+El Corte Inglés  13
+JD Sports  13
+Kate Spade  12
+Burlington  12
+Dick's Sporting Goods  12
+Joe Fresh  12
+Chico's  11
+Dillards  11
+The Buckle  11
+George at ASDA  30
+New Look  29
+bonprix  29
+New Balance  29
+LOFT  29
+Uniqlo  29
+Zalando  27
+Asics Corporation  26
+Topshop  26
+Hermès  26
+Walmart  25
+Dressman  24
+Champion  24
+Hanes  24
+John Lewis  24
+OVS  23
+Debenhams  23
+Columbia Sportswear Co  22
+Hudson's Bay  22
+Sak's Fifth Avenue  22
+Under Armour  22
+COACH  21
+Lands' End  21
+Calvin Klein  38
+Tommy Hilfiger  38
+Van Heusen  38
+Hugo Boss  38
+Lindex  37
+Gucci  37
+Bottega Veneta  36
+YSL  36
+Converse  36
+Jordan  36
+Nike  36
+Primark  36
+Lululemon  35
+Benetton  35
+Target  35
+Gildan Activewear  33
+Burberry  33
+Next  33
+Tesco – F&F  31
+ASOS  50
+Levi Strauss & Co  47
+The North Face  46
+Timberland  46
+Vans  46
+Wrangler  46
+G-Star  45
+Tchibo  42
+Bershka  42
+Massimo Dutti  42
+Pull & Bear  42
+Stradivarius  42
+Zara  42
+Adidas  58
+Reebook  58
+Puma  56
+H&M  55
+Esprit  54
+Banana Republic  54
+Gap  54
+Old Navy  54
+C&A  53
+Marks & Spencer  51
