@@ -1,0 +1,53 @@
+{
+    "hrsigned": [
+        "signed",
+        "hr policy"
+    ],
+    "recruit": [
+        "recruitment"
+    ],
+    "discfire": [
+        "disciplinary and termination"
+    ],
+    "grievdispute": [
+        "grievance handling",
+        "dispute resolution"
+    ],
+    "accounthr": [
+        "accountability",
+        "following hr policies",
+        "following factory policies and procedures"
+    ],
+    "comimplhr": [
+        "communicate and implement",
+        "implement hr"
+    ],
+    "investihr": [
+        "investigate",
+        "evaluate performance of hr",
+        "hr policies and procedures to identify weaknesses"
+    ],
+    "emergencepr": [
+        "emergency",
+        "emergency preparedness"
+    ],
+    "riskcontr": [
+        "risk management"
+    ],
+    "accidentinvesti": [
+        "investigate",
+        "accident investigation"
+    ],
+    "accohs": [
+        "accountability",
+        "for carrying out"
+    ],
+    "impleosh": [
+        "implement osh",
+        "osh policies"
+    ],
+    "invstiosh": [
+        "investigate",
+        "measure osh issues"
+    ]
+}
