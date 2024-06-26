@@ -18,16 +18,19 @@
 	rm(list=ls())
 
 
-sink("DID_FE_240623.txt")
+# sink("DID_FE_240623.txt")
 # read in clean data
-	dt <- read_dta("June23audit variables for analysis.dta")
+	dt <- read_dta("June25audit variables for analysis.dta")
 
 	dt2 <- dt %>%
 		mutate(
-			pid = str_c(FactoryAssessedID,yearforpanel, sep="-"), # 5 Haiti obs missing?
 			AssesmentDate = dmy(AssesmentDate),
-			T1_ctry = if_else(Country%in%c("Indonesia","Vietnam","Jordan","Nicaragua","Haiti"),"1","0") %>% fct(levels=c("0","1")),
-			T1_ym = if_else(AssesmentDate>=ymd(20170701), "1","0") %>% fct(levels=c("0","1")), # uniform treatment
+			fid = fct(as.character(FactoryAssessedID)),
+			ym = floor_date(AssesmentDate, unit="month"),
+			T1 = if_else(
+				Country%in%c("Indonesia","Vietnam","Jordan","Nicaragua","Haiti") & AssesmentDate>=ymd(20170701),
+				"1","0"
+				) %>% fct(levels=c("0","1")), # uniform treatment
 			T2 = case_when(
 				is.na(AssesmentDate)																	~ NA_character_, # to be removed later
 				Country=="Indonesia" 	& AssesmentDate>=ymd(20170101)	~ "1",
@@ -41,36 +44,32 @@ sink("DID_FE_240623.txt")
 	# with(dt2, table(T1_ym, after17jul, exclude=NULL)) # "T1_ym"=="after17jul" except for 5 missing
 	# str(dt2$T2)
 
-	## REMOVE AFTER FIXING MISSING
-	# dt2$pid[duplicated(dt2$pid)] # due to the 5 missing
-	dt2 <- dt2[!is.na(dt2$yearforpanel),]
-
 
 
 # DiD by two-way fixed effects panel models
 ## reported
-	m_r_1 <- plm(reportedcompl ~ T1_ctry*T1_ym + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("FactoryAssessedID","yearforpanel")) #  + mng
+	m_r_1 <- plm(reportedcompl ~ T1 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_r_1, vcov=function(x) vcovHC(x, method="ar"))
 
-	m_r_2 <- plm(reportedcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("FactoryAssessedID","yearforpanel")) #  + mng
+	m_r_2 <- plm(reportedcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_r_2, vcov=function(x) vcovHC(x, method="ar"))
 
 
 ## similar
-	m_s_1 <- plm(similarCPcompl ~ T1_ctry*T1_ym + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("FactoryAssessedID","yearforpanel")) #  + mng
+	m_s_1 <- plm(similarCPcompl ~ T1 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_s_1, vcov=function(x) vcovHC(x, method="ar"))
 
-	m_s_2 <- plm(similarCPcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("FactoryAssessedID","yearforpanel")) #  + mng
+	m_s_2 <- plm(similarCPcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_s_2, vcov=function(x) vcovHC(x, method="ar"))
 
 
 ## distant
-	m_d_1 <- plm(distantCPcompl ~ T1_ctry*T1_ym + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("FactoryAssessedID","yearforpanel")) #  + mng
+	m_d_1 <- plm(distantCPcompl ~ T1 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_d_1, vcov=function(x) vcovHC(x, method="ar"))
 
-	m_d_2 <- plm(distantCPcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("FactoryAssessedID","yearforpanel")) #  + mng
+	m_d_2 <- plm(distantCPcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_d_2, vcov=function(x) vcovHC(x, method="ar"))
-sink()
+# sink()
 
 ## coef plots
 	m <- list(
@@ -80,10 +79,10 @@ sink()
 	modelplot(
 		models=m,
 		coef_map=c(
-			"T21","T1_ctry1:T1_ym1"
+			"T21","T11"
 			)
 		) + geom_vline(xintercept=0) + scale_colour_brewer(palette="Set1") + theme_bw() + labs(title="DiD by FE panel models")
-	ggsave("DID_FE_240623.png")
+	# ggsave("DID_FE_240623.png")
 
 
 
