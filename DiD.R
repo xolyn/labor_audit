@@ -20,13 +20,14 @@
 
 # sink("DID_FE_240623.txt")
 # read in clean data
-	dt <- read_dta("June25audit variables for analysis.dta")
+	dt <- read_dta("June26audit variables for analysis.dta")
 
 	dt2 <- dt %>%
 		mutate(
 			fid = fct(as.character(FactoryAssessedID)),
 			AssesmentDate = dmy(AssesmentDate),
 			ym = floor_date(AssesmentDate, unit="month"),
+			b1i = if_else(buyer1FTindex<0, NA, buyer1FTindex),
 			T1 = if_else(
 				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua") & AssesmentDate>=ymd(20170701),
 				"1","0"
@@ -40,8 +41,8 @@
 				TRUE 																									~ "0"
 				) %>% fct(levels=c("0","1")) # staggered treatment
 			)
-	# with(dt2, table(T1_ym, after17jul, exclude=NULL)) # "T1_ym"=="after17jul" except for 5 missing
-	# str(dt2$T2)
+	# names(dt2)
+	# with(dt2, table(buyer1FTindex, exclude=NULL))
 
 	dt3 <- dt %>%
 		mutate(
@@ -126,6 +127,13 @@
 	m_r_2 <- plm(reportedcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_r_2, vcov=function(x) vcovHC(x, method="ar"))
 
+	m_r_2u <- plm(reportedcompl ~ T2*union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_r_2u, vcov=function(x) vcovHC(x, method="ar"))
+	m_r_2m <- plm(reportedcompl ~ T2*mng + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_r_2m, vcov=function(x) vcovHC(x, method="ar"))
+	m_r_2b <- plm(reportedcompl ~ T2*b1i + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_r_2b, vcov=function(x) vcovHC(x, method="ar"))
+
 
 ## similar
 	m_s_1 <- plm(similarCPcompl ~ T1 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
@@ -134,6 +142,13 @@
 	m_s_2 <- plm(similarCPcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_s_2, vcov=function(x) vcovHC(x, method="ar"))
 
+	m_s_2u <- plm(similarCPcompl ~ T2*union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_s_2u, vcov=function(x) vcovHC(x, method="ar"))
+	m_s_2m <- plm(similarCPcompl ~ T2*mng + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_s_2m, vcov=function(x) vcovHC(x, method="ar"))
+	m_s_2b <- plm(similarCPcompl ~ T2*b1i + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_s_2b, vcov=function(x) vcovHC(x, method="ar"))
+
 
 ## distant
 	m_d_1 <- plm(distantCPcompl ~ T1 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
@@ -141,6 +156,13 @@
 
 	m_d_2 <- plm(distantCPcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
 	summary(m_d_2, vcov=function(x) vcovHC(x, method="ar"))
+
+	m_d_2u <- plm(distantCPcompl ~ T2*union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_d_2u, vcov=function(x) vcovHC(x, method="ar"))
+	m_d_2m <- plm(distantCPcompl ~ T2*mng + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_d_2m, vcov=function(x) vcovHC(x, method="ar"))
+	m_d_2b <- plm(distantCPcompl ~ T2*b1i + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
+	summary(m_d_2b, vcov=function(x) vcovHC(x, method="ar"))
 # sink()
 
 ## coef plots
