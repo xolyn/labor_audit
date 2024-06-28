@@ -189,21 +189,21 @@
 			})
 		})
 
-# sink("DiD_GT_moderation_240628.txt")
-for (i in seq_along(mods)) {
-	for (j in seq_along(dvs)) {
-		m_t <- aggte(m_gt_mod[[i]][[j]], type="dynamic", na.rm=TRUE)
-		summary(m_t)
-		ggdid(m_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title="Reported", x="Exposure Periods")
-		# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_dynamic.png"))
+	# sink("DiD_GT_moderation_240628.txt")
+	for (i in seq_along(mods)) {
+		for (j in seq_along(dvs)) {
+			m_t <- aggte(m_gt_mod[[i]][[j]], type="dynamic", na.rm=TRUE)
+			summary(m_t)
+			ggdid(m_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title="Reported", x="Exposure Periods")
+			# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_dynamic.png"))
 
-		m_g <- aggte(m_gt_mod[[i]][[j]], type="group", na.rm=TRUE)
-		summary(m_g)
-		ggdid(m_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title="Reported", y="Countries")
-		# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_group.png"))
+			m_g <- aggte(m_gt_mod[[i]][[j]], type="group", na.rm=TRUE)
+			summary(m_g)
+			ggdid(m_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title="Reported", y="Countries")
+			# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_group.png"))
+		}
 	}
-}
-# sink()
+	# sink()
 
 
 ## TESTING CODES
