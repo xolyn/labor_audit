@@ -101,7 +101,7 @@
 				)
 			)
 	# str(dt3$ym)
-	# with(dt3, table(ym2, exclude=NULL))
+	# with(dt3, table(union, Country, exclude=NULL))
 	# subset(dt3, subset=!is.na(Country)) %>% summarize(n=n(), .by=c(Country, ym)) %>% pivot_wider(names_from=Country, values_from=n) %>% print(n=Inf)
 
 
@@ -161,7 +161,50 @@
 	summary(m_d_g)
 	ggdid(m_d_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title="Distant", y="Countries")
 	# ggsave("DiD_distant_group.png")
+
+
+## moderation
+	mods <- list(
+		dt3_union0 = subset(dt3, union==0), dt3_union1 = subset(dt3, union==1),
+		dt3_mngl = subset(dt3, mng<7), dt3_mngh = subset(dt3, mng>=7),
+		dt3_b1nn = subset(dt3, buyer1FTindex==-2), dt3_b1nr = subset(dt3, buyer1FTindex==-1), dt3_b1l = subset(dt3, buyer1FTindex<29), dt3_b1h = subset(dt3, buyer1FTindex>=29)
+		)
+	# sapply(mods, dim)
+
+	m_gt_mod <- lapply(mods, function(mod) {
+		lapply(dvs, function(dv) {
+			att_gt(
+				yname = dv,
+				idname = "fid",
+				tname = "ym",
+				gname = "T2_ym",
+				xformla = NULL,
+				data = mod,
+				panel = TRUE,
+				allow_unbalanced_panel = TRUE,
+				control_group = "nevertreated", #"notyettreated"
+				clustervars = NULL,
+				est_method = "dr"
+				)
+			})
+		})
+
+# sink("DiD_GT_moderation_240628.txt")
+for (i in seq_along(mods)) {
+	for (j in seq_along(dvs)) {
+		m_t <- aggte(m_gt_mod[[i]][[j]], type="dynamic", na.rm=TRUE)
+		summary(m_t)
+		ggdid(m_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title="Reported", x="Exposure Periods")
+		# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_dynamic.png"))
+
+		m_g <- aggte(m_gt_mod[[i]][[j]], type="group", na.rm=TRUE)
+		summary(m_g)
+		ggdid(m_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title="Reported", y="Countries")
+		# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_group.png"))
+	}
+}
 # sink()
+
 
 ## TESTING CODES
 	m_r <- att_gt(
