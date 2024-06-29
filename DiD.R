@@ -48,24 +48,24 @@
 		mutate(
 			fid = as.integer(FactoryAssessedID),
 			AssesmentDate = dmy(AssesmentDate),	y = year(AssesmentDate), m = month(AssesmentDate),
-			ym = format(AssesmentDate, "%Y%m") %>% as.integer,
-			ym2 = str_c(y, ceiling(m/2)) %>% as.integer,
-			yq = str_c(y, quarter(AssesmentDate)) %>% as.integer,
+			ym = format(AssesmentDate, "%Y%m") %>% as.integer, ym_r = dense_rank(ym),
+			ym2 = str_c(y, ceiling(m/2)) %>% as.integer, ym2_r = dense_rank(ym2),
+			yq = str_c(y, quarter(AssesmentDate)) %>% as.integer, yq_r = dense_rank(yq),
 			T1 = if_else(
 				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
 				2017,0
 				),
 			T1_ym = if_else(
 				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
-				201707,0
-				),
+				31,0
+				), # dense_rank(201707)==31
 			T1_ym2 = if_else(
 				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
-				20174,0
+				16,0 # dense_rank(20174)==16
 				),
 			T1_yq = if_else(
 				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
-				20173,0
+				11,0 # dense_rank(20173)==11
 				),
 			T2 = case_when(
 				Country=="Vietnam" 			~ 2016, # AssesmentDate>=ymd(20160601)
@@ -76,128 +76,133 @@
 				TRUE 										~ 0
 				),
 			T2_ym = case_when(
-				Country=="Vietnam" 			~ 201606, # AssesmentDate>=ymd(20160601)
-				Country=="Jordan" 			~ 201611, # AssesmentDate>=ymd(20161101)
-				Country=="Indonesia" 		~ 201701, # AssesmentDate>=ymd(20170101)
-				Country=="Haiti" 				~ 201707, # AssesmentDate>=ymd(20170701)
-				Country=="Nicaragua" 		~ 201801, # AssesmentDate>=ymd(20180101)
+				Country=="Vietnam" 			~ 18, # AssesmentDate>=ymd(20160601)
+				Country=="Jordan" 			~ 23, # AssesmentDate>=ymd(20161101)
+				Country=="Indonesia" 		~ 25, # AssesmentDate>=ymd(20170101)
+				Country=="Haiti" 				~ 31, # AssesmentDate>=ymd(20170701)
+				Country=="Nicaragua" 		~ 37, # AssesmentDate>=ymd(20180101)
 				TRUE 										~ 0
 				),
 			T2_ym2 = case_when(
-				Country=="Vietnam" 			~ 20163, # AssesmentDate>=ymd(20160601)
-				Country=="Jordan" 			~ 20166, # AssesmentDate>=ymd(20161101)
-				Country=="Indonesia" 		~ 20171, # AssesmentDate>=ymd(20170101)
-				Country=="Haiti" 				~ 20174, # AssesmentDate>=ymd(20170701)
-				Country=="Nicaragua" 		~ 20181, # AssesmentDate>=ymd(20180101)
+				Country=="Vietnam" 			~ 9, # AssesmentDate>=ymd(20160601)
+				Country=="Jordan" 			~ 12, # AssesmentDate>=ymd(20161101)
+				Country=="Indonesia" 		~ 13, # AssesmentDate>=ymd(20170101)
+				Country=="Haiti" 				~ 16, # AssesmentDate>=ymd(20170701)
+				Country=="Nicaragua" 		~ 19, # AssesmentDate>=ymd(20180101)
 				TRUE 										~ 0
 				),
 			T2_yq = case_when(
-				Country=="Vietnam" 			~ 20162, # AssesmentDate>=ymd(20160601)
-				Country=="Jordan" 			~ 20164, # AssesmentDate>=ymd(20161101)
-				Country=="Indonesia" 		~ 20171, # AssesmentDate>=ymd(20170101)
-				Country=="Haiti" 				~ 20173, # AssesmentDate>=ymd(20170701)
-				Country=="Nicaragua" 		~ 20181, # AssesmentDate>=ymd(20180101)
+				Country=="Vietnam" 			~ 6, # AssesmentDate>=ymd(20160601)
+				Country=="Jordan" 			~ 8, # AssesmentDate>=ymd(20161101)
+				Country=="Indonesia" 		~ 9, # AssesmentDate>=ymd(20170101)
+				Country=="Haiti" 				~ 11, # AssesmentDate>=ymd(20170701)
+				Country=="Nicaragua" 		~ 13, # AssesmentDate>=ymd(20180101)
 				TRUE 										~ 0
 				)
 			)
 	# str(dt3$ym)
-	# with(dt3, table(ym2, exclude=NULL))
+	# with(dt3, table(yq, yq_r, exclude=NULL))
 	# subset(dt3, subset=!is.na(Country)) %>% summarize(n=n(), .by=c(Country, ym)) %>% pivot_wider(names_from=Country, values_from=n) %>% print(n=Inf)
 
 
 
+sink("DiD_GT_240628.txt")
 # DiD by Callaway and Sant'Anna (2021)
 ## group-time ATEs for each of three outcomes
 	dvs <- c("reportedcompl","similarCPcompl","distantCPcompl")
+	dvs_labels <- c("Reported","Similar","Distant")
 
 	m_gt <- lapply(dvs, function(dv) {
 		att_gt(
-			yname = dv,
-			idname = "fid",
-			tname = "ym",
-			gname = "T2_ym",
-			xformla = NULL,
-			data = dt3,
-			panel = TRUE,
-			allow_unbalanced_panel = TRUE,
+			yname = dv, idname = "fid", tname = "ym_r", gname = "T2_ym",
+			xformla = NULL, data = dt3,
+			panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
 			control_group = "nevertreated", #"notyettreated"
-			clustervars = NULL,
 			est_method = "dr"
 			)
 		})
 
+	for (i in seq_along(dvs)) {
+		m_t <- aggte(m_gt[[i]], type="dynamic", na.rm=TRUE)
+		summary(m_t)
+		ggdid(m_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title=paste(dvs_labels[i],"Items"), x="Exposure Periods")
+		ggsave(paste0("DiD_dynamic_",dvs_labels[i],".png"), width=8, height=5)
 
-## reported
-	m_r_t <- aggte(m_gt[[1]], type="dynamic", na.rm=TRUE)
-	summary(m_r_t)
-	ggdid(m_r_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title="Reported", x="Exposure Periods")
-	# ggsave("DiD_reported_dynamic.png")
-
-	m_r_g <- aggte(m_gt[[1]], type="group", na.rm=TRUE)
-	summary(m_r_g)
-	ggdid(m_r_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title="Reported", y="Countries")
-	# ggsave("DiD_reported_group.png")
-
-
-## similar
-	m_s_t <- aggte(m_gt[[2]], type="dynamic", na.rm=TRUE)
-	summary(m_s_t)
-	ggdid(m_s_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title="Similar", x="Exposure Periods")
-	# ggsave("DiD_similar_dynamic.png")
-
-	m_s_g <- aggte(m_gt[[2]], type="group", na.rm=TRUE)
-	summary(m_s_g)
-	ggdid(m_s_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title="Similar", y="Countries")
-	# ggsave("DiD_similar_group.png")
+		m_g <- aggte(m_gt[[i]], type="group", na.rm=TRUE)
+		summary(m_g)
+		ggdid(m_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title=paste(dvs_labels[i],"Items"), y="Countries")
+		ggsave(paste0("DiD_group_",dvs_labels[i],".png"), width=8, height=5)
+	}
+sink()
 
 
-## distant
-	m_d_t <- aggte(m_gt[[3]], type="dynamic", na.rm=TRUE)
-	summary(m_d_t)
-	ggdid(m_d_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title="Distant", x="Exposure Periods")
-	# ggsave("DiD_distant_dynamic.png")
+## moderation
+	# mods <- list(
+	# 	dt3_union0 = subset(dt3, union==0), dt3_union1 = subset(dt3, union==1),
+	# 	dt3_mngl = subset(dt3, mng<7), dt3_mngh = subset(dt3, mng>=7),
+	# 	dt3_b1nn = subset(dt3, buyer1FTindex==-2), dt3_b1nr = subset(dt3, buyer1FTindex==-1), dt3_b1l = subset(dt3, buyer1FTindex<29), dt3_b1h = subset(dt3, buyer1FTindex>=29)
+	# 	)
+	# # sapply(mods, dim)
 
-	m_d_g <- aggte(m_gt[[3]], type="group", na.rm=TRUE)
-	summary(m_d_g)
-	ggdid(m_d_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title="Distant", y="Countries")
-	# ggsave("DiD_distant_group.png")
-# sink()
+	# m_gt_mod <- lapply(mods, function(mod) {
+	# 	lapply(dvs, function(dv) {
+	# 		att_gt(
+	# 			yname = dv,
+	# 			idname = "fid",
+	# 			tname = "ym",
+	# 			gname = "T2_ym",
+	# 			xformla = NULL,
+	# 			data = mod,
+	# 			panel = TRUE,
+	# 			allow_unbalanced_panel = TRUE,
+	# 			control_group = "nevertreated", #"notyettreated"
+	# 			clustervars = NULL,
+	# 			est_method = "dr"
+	# 			)
+	# 		})
+	# 	})
+
+	# for (i in seq_along(mods)) {
+	# 	for (j in seq_along(dvs)) {
+	# 		m_t <- aggte(m_gt_mod[[i]][[j]], type="dynamic", na.rm=TRUE)
+	# 		summary(m_t)
+	# 		ggdid(m_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title="Reported", x="Exposure Periods")
+	# 		# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_dynamic.png"))
+
+	# 		m_g <- aggte(m_gt_mod[[i]][[j]], type="group", na.rm=TRUE)
+	# 		summary(m_g)
+	# 		ggdid(m_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title="Reported", y="Countries")
+	# 		# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_group.png"))
+	# 	}
+	# }
+
 
 ## TESTING CODES
-	m_r <- att_gt(
-		yname = "reportedcompl",
-		idname = "fid",
-		tname = "ym2",
-		gname = "T2_ym2",
-		xformla = ~union+mng,
-		data = dt3,
-		panel = TRUE,
-		allow_unbalanced_panel = TRUE,
-		control_group = "nevertreated", #"notyettreated"
-		clustervars = NULL,
-		est_method = "ipw"
-		)
+	# m <- att_gt(
+	# 	yname = "similarCPcompl", idname = "fid", tname = "ym_r", gname = "T2_ym",
+	# 	xformla = NULL, data = dt3,
+	# 	panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
+	# 	control_group = "nevertreated", #"notyettreated"
+	# 	est_method = "dr"
+	# 	)
 
-	summary(m_r)
-	ggdid(m_r) + theme(axis.text.y=element_text(size=10), axis.text.x=element_text(angle=90, vjust=0.5, hjust=1, size=10))
+	# summary(m)
+	# ggdid(m) + theme(axis.text.y=element_text(size=10), axis.text.x=element_text(angle=90, vjust=0.5, hjust=1, size=10))
 
-	agg.es <- aggte(m_r, type="dynamic", na.rm=TRUE)
-	summary(agg.es)
-	ggdid(agg.es) + scale_x_continuous(expand=c(0.01,0), n.breaks=10)
-	# ggsave("DID_GT_dynamic.png")
+	# agg.es <- aggte(m, type="dynamic", na.rm=TRUE)
+	# summary(agg.es)
+	# ggdid(agg.es) + scale_x_continuous(expand=c(0.01,0), n.breaks=10)
 
-	# agg.cs <- aggte(m_r, type="calendar", na.rm=TRUE)
-	# summary(agg.cs)
-	# ggdid(agg.cs) + scale_x_continuous(expand=c(0.01,0), guide=guide_axis(angle=90), n.breaks=10)
-	# ggsave("DID_GT_calendar.png")
+	# # agg.cs <- aggte(m, type="calendar", na.rm=TRUE)
+	# # summary(agg.cs)
+	# # ggdid(agg.cs) + scale_x_continuous(expand=c(0.01,0), guide=guide_axis(angle=90), n.breaks=10)
 
-	agg.gs <- aggte(m_r, type="group", na.rm=TRUE)
-	summary(agg.gs)
-	ggdid(agg.gs) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"))
-	# ggsave("DID_GT_group.png")
+	# agg.gs <- aggte(m, type="group", na.rm=TRUE)
+	# summary(agg.gs)
+	# ggdid(agg.gs) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"))
 
-	# agg.simple <- aggte(m_r, type="simple", na.rm=TRUE)
-	# summary(agg.simple)
+	# # agg.simple <- aggte(m, type="simple", na.rm=TRUE)
+	# # summary(agg.simple)
 
 
 
