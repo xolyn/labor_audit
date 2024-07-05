@@ -1,0 +1,12 @@
+sheets=["PYV","PHV","FTV2","SA1","CJ1","PWI2"]
+# pd.read_excel("t1.xlsx",sheet_name=sheets[2]).rename({"Unnamed: 0":"Year"},axis=1)
+rates={}
+for s in sheets:
+    dft=pd.read_excel("t1.xlsx",sheet_name=s).rename({"Unnamed: 0":"Year"},axis=1).set_index("Year")
+    fact=s.lower()
+    rates[fact]={}
+    for y in list(dft.index):
+        for mi,mn in zip(range(len(dft.columns)),dft.columns):
+            rates[fact][str(y)+"-"+str(mi+1)]=dft.loc[y,mn]
+
+rates
