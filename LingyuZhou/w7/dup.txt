@@ -18,7 +18,7 @@
  848: ['cg glory manufacturing company limited',
   'ford glory manufacturing limited']:"cg glory manufacturing company limited"$
  880: ['grand twins international plc', 'grand twins international ltd']:"grand twins international"$
- 889: ['haitan hb', 'haitan garment']: "haitan hb (cambodia"$
+ 889: ['haitan hb', 'haitan garment']: "haitan hb (cambodia)"$
  890: ['pla tina', 'hamon grand international']: "pla tina"$
  924: ['wan he da manufacturing company limited', 'jit textiles limited']:"wan he da manufacturing"$
  941: ['harmony apparel', 'kie and kie world']: "harmony apparel"$
@@ -29,7 +29,7 @@
  1036: ['you qi silkscreen', 's.a.c']:"you qi silkscreen"$
  1063: ['nyan kids ltd.-2', 'smart pea garment ltd']:"nyan kids"$
  1105: ['top form company limited', 'top form']: "top form"$
- 1204: ['xin hai tong clothing', 'wanshen clothing']:"xin hai tong clothing (cambodia)  (formerly wanshen clothing (cambodia"$
+ 1204: ['xin hai tong clothing', 'wanshen clothing']:"xin hai tong clothing (cambodia)  (formerly wanshen clothing (cambodia))"$
  1230: ['classic fashion apparel industry ltd. co',
   'standard jeans apparel manufacturing co']: "classic fashion apparel industry ltd"$
  1328: ['amw vietnam joint stock company', 'amw vietnam']:"amw vietnam"$
@@ -54,11 +54,11 @@
  2086: ['i and j hcm company limited', 'shinwon ebenezer sai gon']: "i and j hcm company limited"$
  2168: ['tng investment and trading jsc', 'dai tu garment branch']: "tng investment and trading jsc"$
  2343: ['thanh tan garment factory', 'branch of viet thai garment export jsc']:"viet thai garment export jsc"$
- 2433: ['new evergreen industrial', 'sd evergreen apparel']:"sd evergreen apparel (cambodia"$
+ 2433: ['new evergreen industrial', 'sd evergreen apparel']:"sd evergreen apparel (cambodia)"$
  2461: ['pt u jump indonesia', 'pt uwu jump indonesia']: "pt uwu jump indonesia"$
  2557: ['pt viana unggul garmindo', 'pt yakjin jaya indonesia']: "pt yakjin jaya indonesia"$
  2623: ['pt handsome kovi', 'pt handsomekovi indonesia']: "pt handsomekovi indonesia"$
- 2634: ['bing win garment', 'sysg garment company limited']:"sysg garment  (formerly bing win garment (cambodia"$
+ 2634: ['bing win garment', 'sysg garment company limited']:"sysg garment  (formerly bing win garment (cambodia))"$
  2649: ['leading star vietnam garment', 'leading star vietnam garment jsc']: "leading star vietnam garment"$
  2674: ['hung hsing garment . garment', 'hung hsing garment']:"hung hsing garment"
  2675: ['brands of the world in america, s.a modulo i',
