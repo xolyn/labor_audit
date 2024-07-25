@@ -1,6 +1,6 @@
-{117: ['Ever Rising Garment Process Finishing Pte., Ltd. (formerly T&W (Yung Wah Branch 3)']: "yung wah industrial (cambodia"$
-812:['Dignity Knitter Limited (formerly River Rich Textile Ltd.)']:"dignity knitter ltd (formerly river rich textile" $
-1204:['Xin Hai Tong Clothing (Cambodia) Co., Ltd. (formerly Wanshen Clothing (Cambodia) Co., Ltd)']:"xin hai tong clothing (cambodia)  (formerly wanshen clothing (cambodia"$
+{117: ['Ever Rising Garment Process Finishing Pte., Ltd. (formerly T&W (Yung Wah Branch 3)']: "yung wah industrial (cambodia)"$
+812:['Dignity Knitter Limited (formerly River Rich Textile Ltd.)']:"dignity knitter ltd (formerly river rich textile)" $
+1204:['Xin Hai Tong Clothing (Cambodia) Co., Ltd. (formerly Wanshen Clothing (Cambodia) Co., Ltd)']:"xin hai tong clothing (cambodia)  (formerly wanshen clothing (cambodia))"$
 1458:['Wintai Sock Manufacture Ltd (formerly Blossom Century (Cambodia) Ltd.)']:"blossom century (cambodia) ltd"$
-2433:['SD Evergreen Apparel (Cambodia) Co., Ltd. (formerly New Evergreen Industrial Co., Ltd)']:"sd evergreen apparel (cambodia"$
-2634:['SYSG Garment Company Limited (formerly Bing Win Garment (Cambodia) Co., Ltd.)']:"sysg garment  (formerly bing win garment (cambodia"$}
+2433:['SD Evergreen Apparel (Cambodia) Co., Ltd. (formerly New Evergreen Industrial Co., Ltd)']:"sd evergreen apparel (cambodia)"$
+2634:['SYSG Garment Company Limited (formerly Bing Win Garment (Cambodia) Co., Ltd.)']:"sysg garment  (formerly bing win garment (cambodia))"$}
