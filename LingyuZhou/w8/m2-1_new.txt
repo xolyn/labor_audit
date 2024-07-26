@@ -1,0 +1,143 @@
+'jerash garments and fashions manufacturing': ['jerash garments and fashions manfacturing co']$
+'classic fashion apparel industry ltd. co': ['classic fashion apparel industry ltd']$
+*'fine apparel ltd': ['fine']$
+'united sweethearts garments': ['united sweethearts garment']$
+'fox river caribe, inc': ['fox river caribe inc']$
+'hansae tn': ['hansae vietnam']$
+'mas al safi apparel manufacturing': ['mas alsafi apparel manufacturing llc (formerly sterling apparel manufacturing llc)']$
+*'al hanan for cloth manufacturing est': ['al']$
+*'al masera textile': ['al']$
+'saigon 3 garment jsc': ['saigon']$
+'shillabags international': ['shilla bags vietnam']$
+'avery dennison ris vietnam': ['avery dennison rbis vietnam']$
+'one world apparel sa': ['one world apparel']$
+'global manufacturers and contractors': ['global manufacturers and contractors sa']$
+'esquel garment manufacturing': ['esquel garment manufacturing vietnam']$
+'mas al safi apparel manufacturing llc': ['mas alsafi apparel manufacturing llc (formerly sterling apparel manufacturing llc)']$
+'el zay ready wear manufacturing co': ['el-zay ready wear manufacturin']$
+'uslc apparel, sa': ['uslc apparel sa (formerly uslc de nicaragua)']$
+'al areen wear ltd': ['al']$
+'rainbow textile llc': ['rainbow textiles llc']$
+'kahoindah citragarment pt': ['kaho indah citra garment pt']$
+'saigon 2 garment jsc': ['saigon']$
+'s and h global 1-6': ['s and h global sa']$
+'sae-a technotex, sa': ['sae a technotex sa']$
+'gildan activewear san marcos ii, sa': ['gildan activewear san marcos ii sa']$
+'rich pine international group ltd': ['rich pine international group for clothing tools']$
+'koin baju global pt': ['koin baju global cicurug pt']$
+'hansae tg': ['hansae vietnam']$
+*'international elegance garment manufacturing': ['international business garments manufacturing company ltd']$
+'trigoldenstar wisesa pt': ['tri golden star wisesa pt']$
+*'al kawthar garments industry and trade': ['al']$
+'cambo kotop ltd  1': ['cambo kotop ltd']$
+'akeentex pte. ltd': ['akeentex pte ltd']$
+'bodykids fashion wear': ['body kids fashion wear']$
+'sees global kh  (formerly cam taekang sportech )': ['sees global kh']$
+'cambo handsome ltd. 1': ['cambo handsome ltd']$
+'cambo handsome ltd. 2': ['cambo handsome ltd']$
+'cambo handsome ltd. 3': ['cambo handsome ltd']$
+'chung fai knitwear and dyeing fty. ltd': ['chung fai knitwear fty ltd']$
+'dewhirst': ['dewhirst cambodia']$
+'dongdu textile': ['dongdu textile cambodia']$
+*'eclat highter international garment (cambodia)  (formerly highter)': ['e-garment']$
+*'everay textile garment': ['e-garment']$
+*'ever-glory garment manufacturing': ['e-garment']$
+*'e-z international garment factory': ['e-garment']$
+'gawon apparel  (formerly bumin)': ['gawon apparel']$
+'ghim li pte, ltd': ['ghim li pte ltd']$
+'global apparels limited (formerly jusca garments)': ['global apparels ltd']$
+'goldfame enterprises knitters ltd': ['goldfame star enterprises ltd']$
+'hoyear garment ltd': ['hoyear cambodia garment ltd']$
+'j s d textile': ['jsd textile']$
+'a.k.m garment  (formerly k.a.m. garment )': ['akm garment']$
+'kbal koah garment': ['kbal koah garment co']$
+'timeless fashion clothing  (formerly magic square (formerly soyeah))': ['timeless fashion clothing']$
+'mastex incam (cambodia)  (formerly in kyung 2 cambodia )': ['mastex incam cambodia']$
+'quicksew': ['quicksew ltd']$
+'six plus industry': ['sixplus industry']$
+'sl garment processing ltd': ['sl garment processing cambodia ltd']$
+'w and d cambodia': ['w and d']$
+'y and w garment  )': ['y and w garment']$
+'zhong yin (cambodia) textile  (formerly gold flower knitting )': ['zhong yin cambodia b textile']$
+'daeseung-cambo  (formerly mir apparel world )': ['daeseung cambo']$
+'xin hai tong clothing (cambodia) (formerly wanshen clothing (cambodia))': ['xin hai tong clothing (cambodia)  (formerly wanshen clothing (cambodia) )']$
+'hana i. inc': ['hana i inc']$
+'hong seng thai-vina': ['hong seng thai vina']$
+'new holland apparel nicaragua': ['new holland apparel']$
+'lee and vina': ['l and b vina']$
+'woo shin garment indonesia pt': ['wooin indonesia pt']$
+'horizon outdoor': ['horizon outdoor cambodia']$
+'purnama asih sur pt': ['purnama pt']$
+'duc giang corp': ['duc giang chemicals group jsc']$
+'solamoda garments': ['solamoda garment']$
+'global apparel textile manufacturing pte., ltd': ['global apparels ltd']$
+*'eminent garment ltd': ['e-garment']$
+*'indo-chine vn': ['indochine import export investment jsc']$
+'sq celsius ltd': ['sq celsius ltd (formerly fs sweaters)']$
+'golden star corporate development': ['golden star corporate development ltd']$
+'crown wear ltd': ['crown wears pvt ltd']$
+'minh tri thai binh': ['minh tri']$
+'sansan saudaratex jaya 5 pt': ['sansan saudaratex jaya pt']$
+'agile sweater': ['agile sweater cambodia']$
+'asean three tree': ['asean tire']$
+'adhunik poshak shilpa ltd': ['adhunik poshak shilpo ltd']$
+'standard group ltd': ['standard group']$
+*'knit and knitwears ltd': ['knit asia ltd']$
+'pan brothers 9 tbk pt': ['pan brothers tbk pt']$
+'ying yi industry  (formerly perfecta (cambodia) garment )': ['ying yi industry']$
+'thats it sports wear ltd': ['thatâs it sports wear ltd']$
+*'creative wash ltd': ['creative shirts ltd']$
+'raquef apparels washing and packing ind. ltd': ['raquef apparels washing and packaging industries ltd']$
+'ivory garments factory llc': ['ivory garment factory llc']$
+'pine tree co. for textile manufacturing p.s.c': ['pine tree company for textile manufacturing psc']$
+'jinnat knitwears ltd': ['jinnat knit wears ltd']$
+*'mascot knits ltd': ['ms knit ltd']$
+'s.b. style composite ltd': ['sb knit composite ltd']$
+*'al mustamerah for tex': ['al']$
+'ml intimate apparel ltd': ['ml intimate apparel cambodia ltd']$
+'bac giang bgg garment corp': ['bac giang lgg garment corp']$
+*'sc enterprises pt': ['sp pt']$
+'sansan saudaratex jaya 1 pt': ['sansan saudaratex jaya pt']$
+'u.i.c apparel manufacturing': ['uic apparel manufacturing']$
+*'thats it garments ltd': ['tuba garments ltd']$
+'arunima sportswear ltd': ['arunima sports wear ltd']$
+'akh shirts limited (former factory)': ['akh shirts ltd']$
+'regina miracle international vietnam': ['regina miracle international']$
+*'thats it sweater ltd': ['time sweater ltd']$
+'ayesha clothing company ltd': ['ayesha clothing']$
+'ayesha clothing company ltd-02': ['ayesha clothing']$
+'classic fashion apparel industry': ['classic fashion apparel industry ltd']$
+'visual knitwears ltd': ['virtual knitwear ltd']$
+*'gunung abadi pt': ['gunung harta pt']$
+'fakhruddin textile mills ltd': ['fakhruddin textiles mills ltd']$
+*'bac giang lng garment corp': ['bac giang lgg garment corp']$
+'winter dress limted': ['winter dress ltd']$
+'sysg garment (formerly bing win garment (cambodia))': ['sysg garment  (formerly bing win garment (cambodia) )']$
+'ecofab ltd': ['eco fab ltd']$
+'nyg': ['nyg vietnam']$
+*'grupo alfatech,sa': ['grupo gama']$
+'jasan socks viet nam': ['jasan socks vietnam']$
+'flamingo fashions limited': ['flamingo fashions ltd']$
+'hj.busana indah pt': ['hj busana indah pt']$
+*'duc hanh garment jsc': ['duc canh']$
+'cambo h.d.y.l garment': ['cambo hdyl garment']$
+'s and h global washing 7': ['s and h global sa']$
+'epyllion style ltd': ['epyllion ltd']$
+*'js vina': ['jsi vina corp']$
+'norp knit industries ltd. unit-2': ['norp knit industries ltd']$
+'sonali fabrics and textile mills (pvt.) ltd. (sweater) (former factory)': ['sonali fabrics and textile mills ltd']$
+*'jmtech busana global pt': ['jtech']$
+'g.w greenways textile': ['gw greenways textile']$
+'k.c bottom and shirt wear company': ['kc bottom and shirt wear co']$
+'perfect vision fashion': ['perfect vision fashion cambodia']$
+'jinnat knitwears limited': ['jinnat knit wears ltd']$
+'onus design ltd': ['onus designs ltd']$
+'hansoll indo java pt': ['hansoll indo java pt (formerly laspo pt)']$
+'makalot garments  branch 1': ['makalot garments']$
+'debonair limited': ['debonair ltd']$
+'birds a and z ltd': ['birds a. and z. ltd']$
+'sees global': ['sees global kh']$
+'shangu tex-2 ltd': ['shangu tex ltd']$
+'e-top': ['e-top vietnam']$
+*'sees vina': ['sphere vina']$
+'hi tech textile': ['hi-tech textile llc']$
