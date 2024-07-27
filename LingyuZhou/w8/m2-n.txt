@@ -1,47 +1,12 @@
  'premium apparel': ['premium apparel sa']$
- 'sarah': ['sarah textile', 'sara vietnam jsc', 'sara jsc']$
- 't and t': [
-  'tien nga production and trading jsc',
-  'thai phuong production and trading',
-  'tan hong phat packaging and transportation services',
-  'tai loc technology service and trading',
-  'tay nam steel production and trading',
-  'thang long real estate and trading investment jsc',
-  'tng investment and trading jsc',
-  'transportation and trading services jsc',
-  'thuan phuoc seafoods and trading corp',
-  'trung dung trading and tourism',
-  'thien thanh loc manufacturing and trading']$
- 'atlanta garment manufacturing co': ['atlanta garment manufacturing co llc']$
- 'viet hung jsc': ['viet hong technology']$
+  'atlanta garment manufacturing co': ['atlanta garment manufacturing co llc']$
  'viet tien garment cooperation': [  'viet tien garment corp']$
- 'tai viet camping products industries': ['tai viet corp']$
- 'i.s vietnam': ['international sos vietnam', 'iiyama seiki vietnam']$
  'aseel universal garments manufacturing co': ['aseel universal garments manufacturing company']$
-*'viet khoa': ['viet hong technology',
-  'viet hoa nong',
-  'viet han engineering limited company',
-  'viet hong export garment jsc',
-  'viet khanh',
-  'viet thai electric cable corp',
-  'viet thang corp',
-  'viet phat import export trading investment jsc',
-  'viet thanh steel trading and manufacturing',
-  'viets',
-  'viet thai garment export jsc',
-  'viet y',
-  'viet thanh long an steel jsc',
-  'viet nhat plastic production',
-  'viet hoa aquatic food joint venture',
-  'viet thang feed jsc',
-  'viet nhat seafood corp',
-  'viet phap steel company']$
  'nha be garment corp': ['nha be garment corp jsc']$
 *'pan pacific nesia pt': [  'pan pacific international tbk']$
 *'son kha': ['son kha screen printing']$
-* 't and an': ['transport and industry development investment jsc',
-  'thai son development and investment jsc']$
-* 'i apparel ltd': ['ik apparel', 'indochine apparel ltd']$
+
+
 *  'ing international pt': ['indo cahaya energi internasional pt','igp international pt']$
 * 'amm garment': ['akm garment', 'asia pacific dreamax garment']$
  'indochine apparel (cambodia) ltd. (formerly indochine gawon (cambodia) ltd)': ['indochine apparel ltd']$
