@@ -1,0 +1,7 @@
+'Chemicals',
+ 'General Industrials',
+ 'Industrial Engineering',
+ 'Personal and Household Goods',
+ 'Retail',
+ 'Support Services (Industrial Goods and Services)',
+ 'Unspecified',

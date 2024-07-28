@@ -5,8 +5,6 @@
  'nha be garment corp': ['nha be garment corp jsc']$
 *'pan pacific nesia pt': [  'pan pacific international tbk']$
 *'son kha': ['son kha screen printing']$
-
-
 *  'ing international pt': ['indo cahaya energi internasional pt','igp international pt']$
 * 'amm garment': ['akm garment', 'asia pacific dreamax garment']$
  'indochine apparel (cambodia) ltd. (formerly indochine gawon (cambodia) ltd)': ['indochine apparel ltd']$
