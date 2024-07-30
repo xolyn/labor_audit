@@ -3,85 +3,38 @@
  'viet tien garment cooperation': [  'viet tien garment corp']$
  'aseel universal garments manufacturing co': ['aseel universal garments manufacturing company']$
  'nha be garment corp': ['nha be garment corp jsc']$
-*'pan pacific nesia pt': ['pan pacific international tbk']$
-*'son kha': ['son kha screen printing']$
-*  'ing international pt': ['indo cahaya energi internasional pt','igp international pt']$
-* 'amm garment': ['akm garment', 'asia pacific dreamax garment']$
+'son kha': ['son kha screen printing']$
  'indochine apparel (cambodia) ltd. (formerly indochine gawon (cambodia) ltd)': ['indochine apparel ltd']$
-* 'phuong dong jsc': ['phuong dong viet transportation oil jsc',  'phuong dong petroleum tourism jsc']$
  'e garment': ['e-garment']$
  'soho sheng he (cambodia) garment  (formerly fong yean (cambodia) garment )': ['soho sheng he garment']$
  'sabrina garment mfg corp': ['sabrina garment manufacturing corp']$
  'shen zhou': ['shenzhou']$
-* 'saigon private garment export': ['saigon', 'saigon port']$
- 'cuong tai': ['cuong thuan idico development investment jsc']$
-* 'doosan sinar sukabumi pt': ['doosan jaya sukabumi pt']$
  'cwkh garment ltd': ['cwkh garment cambodia ltd']$
  'nobland viet nam': ['nobland vietnam']$
-* 'phong phu': ['phong phu yarn thread', 'phong phu corp', 'phong phu international jsc', 'phong phu pharmaceutical jsc']$
-* 'truong son garment jsc': ['truong son tourism jsc coecco','tuong an garment']$
-* 'bao hung jsc': ['ba huan', 'bao huang sm']$
-* 'sai garments industries pt': ['sai apparel industries pt', 'sp pt']$
-* 'leo jins vietnam': ['leo jins']$
-* 'viet pan pacific international': ['viet pan pacific nam dinh', 'viets', 'viet y']$
+ 'leo jins vietnam': ['leo jins']$
  's.l.j apparel manufacturing': ['slj apparel manufacturing']$
-* 'hoa binh': ['hoa binh corp', 'hoa binh security service', 'hoabinh construction jsc', 'hoa binh sugar co', 'hoa binh clear water jsc', 'hoa binh rubber jsc', 'hoa binh construction and real', 'hoa binh securities jsc', 'hoa binh mineral jsc']$
  'golden flower pt': ['golden flower tbk pt']$
  'tyfountex indonesia pt': [ 'tyfountex indonesia']$
- 'viet tien phu': ['viet tien garment corp',  'viet tien son real estate holding co']$
-* 'son ha garment jsc': ['song hong garment jsc', 'san ha']$
-* 'viet trung jsc': ['viets',  'viet y','viet-trung coke and mineral resources company']$
  'thanh tri jsc': ['thanh tri garment jsc']$
-* 'pro': ['pro kingtex vietnam']$
  'j.m. fabrics ltd': ['jm fabrics ltd']$
  'hi-synergy international garments': ['hi-synergy international garme']$
- 'golden apparel ltd': ['global apparels ltd']$
-* 'mm fashions and composite ltd': ['momo fashions ltd']$
  'crystal martin limited': ['crystal martin ltd']$
  'sam kyung jaya busana pt': ['samkyung jaya busana pt']$
  'pioneer knitwears ltd': ['pioneer knitwear ltd']$
-* 'aseel universal garments manufacturing co.al mwaqar': ['aseel universal garments manufacturing company']$
+aseel universal garments manufacturing co.al mwaqar': ['aseel universal garments manufacturing company']$
  'ananta garments ltd': ['ananta apparels ltd']$
-* 'viet pacific apparel': ['viets', 'viet y']$
-* 'thanh tai garment and wash': ['thanh tri garment jsc']$
-* 'son ha': ['son ha sai gon jsc', 'sonha jsc', 'son ha international corp']$
  'modern washing and dyeing ind ltd': ['modern washing and dyeing inds ltd']$
  'sma vina viethan garment import export jsc': ['sma vina viet-han garment import export jsc']$
-* 'viet tri garment jsc': ['viet tien garment corp']$
-* 'son ha company ltd': ['sonha jsc']$
  'citra unggul perkasa garment pt': ['citra unggul perkasa pt']$
-* 'viet thanh garment trading jsc': ['viet thinh garment jsc','viet khanh','viet tien garment corp',']$
-* 'minh anh': ['minh anh construction jsc', 'minh anh trading and investment development', 'minh anh khoai chau garment jsc']$
-* 'tien hung jsc': ['thien huong food jsc']$
  'dasan pan pacific indonesia pt': ['dasan pan pacific pt']$
-* 'buana samudra lestari pt': ['buana wira lestari pt']$
  'akh apparels ltd': ['akh eco apparels ltd']$
-* 'bintang baru sukses pt': ['bhadra sukses pt', 'bina sarana sukses, pt']$
-* 'dap cau': ['dap cau garment corp jsc', 'dap cau luc ngan jsc']$
-* 'dong nai garment corp': [ 'dong hai', 'dong nai paint corp']$
-* 'southern services ltd': ['southern garments ltd']$
  'maxport limited vietnam': ['maxport ltd']$
  'sayem fashions ltd': ['sayem fashions',]$
  'savar sweaters ltd': ['savar sweater ltd',]$
  'shyms fashions ltd': ['shyms fashion ltd'']$
-* 'bintang abadi persada pt': ['bintang agung persada pt', 'bintang gasing persada pt']$
-* 'tai': [ 'tai viet corp']$
-* 'harindo pt': ['harpindo mitra kharisma, pt]$
-* 'viet pan pacific world': ['viet pan pacific nam dinh']$
-* 'shilla glovis vietnam': ['shilla bags vietnam']$
-* 'anugerah alfa lestari pt': ['anugrah hijau lestari pt']$
-* 'smart shirts garments manufacturing bac giang': ['smart shirts knitting garments manufacturing']$
-* 'renaissance apparels ltd': ['renaissance garments ltd']$
-* 'smart shirts garments manufacturing bao minh': ['smart shirts knitting garments manufacturing']$
- 'anugerah abadi magelang pt': ['agel langgeng pt', 'agl pt', 'aln pt']$
+ 'renaissance apparels ltd': ['renaissance garments ltd']$
  'tamishna fashion wear limited': ['tamishna fashion wear ltd']$
  'a.k.m. knit wear ltd': ['akm knit wear ltd']$
-* 'chittagong asian apparels ltd': ['chittagong asian paper mills pvt ltd']$
-* 'phu thinh export garment jsc': ['phu thinh-nha be garment jsc']$
  'praegear vietnam': ['praegear viet nam']$
-* 'babylon garments ltd': ['babylon printers ltd', 'babylon group']$
-* 'smart shirts garments manufacturing hai hau': ['smart shirts knitting garments manufacturing']$
- 'cosmopolitan industries ltd': ['cpl-cosmopiton industry ltd']$
+'babylon garments ltd': ['babylon group']$
  'viet pan-pacific nam dinh co,. ltd': ['viet pan pacific nam dinh']$
-* 'surya berkat indonesia pt': [ 'surya grain indonesia cv', 'surya toto indonesia tbk pt']$
-* 'sigma vietnam industrial': ['sigma']$
