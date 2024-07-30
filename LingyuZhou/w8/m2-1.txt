@@ -93,7 +93,6 @@
  'interamerican wovens s.a': ['interamerican wovens sa'],
 * 'eins': ['eins vina'],
  'global manufacturers and contractors': ['global manufacturers and contractors sa'],
-* 'busanaremaja agracipta pt': ['ba pt'],
  'w and d cambodia': ['w and d'],
  'arunima sportswear ltd': ['arunima sports wear ltd'],
 * 'crystal intimate ltd': ['crystel'],

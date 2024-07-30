@@ -3,7 +3,7 @@
  'viet tien garment cooperation': [  'viet tien garment corp']$
  'aseel universal garments manufacturing co': ['aseel universal garments manufacturing company']$
  'nha be garment corp': ['nha be garment corp jsc']$
-*'pan pacific nesia pt': [  'pan pacific international tbk']$
+*'pan pacific nesia pt': ['pan pacific international tbk']$
 *'son kha': ['son kha screen printing']$
 *  'ing international pt': ['indo cahaya energi internasional pt','igp international pt']$
 * 'amm garment': ['akm garment', 'asia pacific dreamax garment']$
@@ -56,7 +56,7 @@
  'dasan pan pacific indonesia pt': ['dasan pan pacific pt']$
 * 'buana samudra lestari pt': ['buana wira lestari pt']$
  'akh apparels ltd': ['akh eco apparels ltd']$
- 'bintang baru sukses pt': ['bhadra sukses pt', 'bina sarana sukses, pt']$
+* 'bintang baru sukses pt': ['bhadra sukses pt', 'bina sarana sukses, pt']$
 * 'dap cau': ['dap cau garment corp jsc', 'dap cau luc ngan jsc']$
 * 'dong nai garment corp': [ 'dong hai', 'dong nai paint corp']$
 * 'southern services ltd': ['southern garments ltd']$

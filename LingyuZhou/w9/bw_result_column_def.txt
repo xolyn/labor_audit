@@ -1,0 +1,6 @@
+FactoryName:    Original factory name from BetterWork, never changed.
+cName:          Cleaned factory name from BetterWork.
+CNRR:           Corresponding original factory names from Reprisk Company Identifier.
+RRCleaned:      Cleaned corresponding original factory names from Reprisk Company Identifier.
+RRSector:       Corresponding sector to CNRR.
+repriskID:      Corresponding repriskID to CNRR.
