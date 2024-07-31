@@ -1,40 +1,40 @@
- 'premium apparel': ['premium apparel sa']$
-  'atlanta garment manufacturing co': ['atlanta garment manufacturing co llc']$
- 'viet tien garment cooperation': [  'viet tien garment corp']$
- 'aseel universal garments manufacturing co': ['aseel universal garments manufacturing company']$
- 'nha be garment corp': ['nha be garment corp jsc']$
+'premium apparel': ['premium apparel sa']$
+'atlanta garment manufacturing co': ['atlanta garment manufacturing co llc']$
+'viet tien garment cooperation': [  'viet tien garment corp']$
+'aseel universal garments manufacturing co': ['aseel universal garments manufacturing company']$
+'nha be garment corp': ['nha be garment corp jsc']$
 'son kha': ['son kha screen printing']$
- 'indochine apparel (cambodia) ltd. (formerly indochine gawon (cambodia) ltd)': ['indochine apparel ltd']$
- 'e garment': ['e-garment']$
- 'soho sheng he (cambodia) garment  (formerly fong yean (cambodia) garment )': ['soho sheng he garment']$
- 'sabrina garment mfg corp': ['sabrina garment manufacturing corp']$
- 'shen zhou': ['shenzhou']$
- 'cwkh garment ltd': ['cwkh garment cambodia ltd']$
- 'nobland viet nam': ['nobland vietnam']$
- 'leo jins vietnam': ['leo jins']$
- 's.l.j apparel manufacturing': ['slj apparel manufacturing']$
- 'golden flower pt': ['golden flower tbk pt']$
- 'tyfountex indonesia pt': [ 'tyfountex indonesia']$
- 'thanh tri jsc': ['thanh tri garment jsc']$
- 'j.m. fabrics ltd': ['jm fabrics ltd']$
- 'hi-synergy international garments': ['hi-synergy international garme']$
- 'crystal martin limited': ['crystal martin ltd']$
- 'sam kyung jaya busana pt': ['samkyung jaya busana pt']$
- 'pioneer knitwears ltd': ['pioneer knitwear ltd']$
-aseel universal garments manufacturing co.al mwaqar': ['aseel universal garments manufacturing company']$
- 'ananta garments ltd': ['ananta apparels ltd']$
- 'modern washing and dyeing ind ltd': ['modern washing and dyeing inds ltd']$
- 'sma vina viethan garment import export jsc': ['sma vina viet-han garment import export jsc']$
- 'citra unggul perkasa garment pt': ['citra unggul perkasa pt']$
- 'dasan pan pacific indonesia pt': ['dasan pan pacific pt']$
- 'akh apparels ltd': ['akh eco apparels ltd']$
- 'maxport limited vietnam': ['maxport ltd']$
- 'sayem fashions ltd': ['sayem fashions',]$
- 'savar sweaters ltd': ['savar sweater ltd',]$
- 'shyms fashions ltd': ['shyms fashion ltd'']$
- 'renaissance apparels ltd': ['renaissance garments ltd']$
- 'tamishna fashion wear limited': ['tamishna fashion wear ltd']$
- 'a.k.m. knit wear ltd': ['akm knit wear ltd']$
- 'praegear vietnam': ['praegear viet nam']$
+'indochine apparel (cambodia) ltd. (formerly indochine gawon (cambodia) ltd)': ['indochine apparel ltd']$
+'e garment': ['e-garment']$
+'soho sheng he (cambodia) garment  (formerly fong yean (cambodia) garment )': ['soho sheng he garment']$
+'sabrina garment mfg corp': ['sabrina garment manufacturing corp']$
+'shen zhou': ['shenzhou']$
+'cwkh garment ltd': ['cwkh garment cambodia ltd']$
+'nobland viet nam': ['nobland vietnam']$
+'leo jins vietnam': ['leo jins']$
+'s.l.j apparel manufacturing': ['slj apparel manufacturing']$
+'golden flower pt': ['golden flower tbk pt']$
+'tyfountex indonesia pt': [ 'tyfountex indonesia']$
+'thanh tri jsc': ['thanh tri garment jsc']$
+'j.m. fabrics ltd': ['jm fabrics ltd']$
+'hi-synergy international garments': ['hi-synergy international garme']$
+~'crystal martin limited': ['crystal martin ltd']$
+'sam kyung jaya busana pt': ['samkyung jaya busana pt']$
+'pioneer knitwears ltd': ['pioneer knitwear ltd']$
+'aseel universal garments manufacturing co.al mwaqar': ['aseel universal garments manufacturing company']$
+'ananta garments ltd': ['ananta apparels ltd']$
+'modern washing and dyeing ind ltd': ['modern washing and dyeing inds ltd']$
+'sma vina viethan garment import export jsc': ['sma vina viet-han garment import export jsc']$
+'citra unggul perkasa garment pt': ['citra unggul perkasa pt']$
+'dasan pan pacific indonesia pt': ['dasan pan pacific pt']$
+'akh apparels ltd': ['akh eco apparels ltd']$
+'maxport limited vietnam': ['maxport ltd']$
+'sayem fashions ltd': ['sayem fashions']$
+'savar sweaters ltd': ['savar sweater ltd']$
+'shyms fashions ltd': ['shyms fashion ltd']$
+'renaissance apparels ltd': ['renaissance garments ltd']$
+~'tamishna fashion wear limited': ['tamishna fashion wear ltd']$
+'a.k.m. knit wear ltd': ['akm knit wear ltd']$
+'praegear vietnam': ['praegear viet nam']$
 'babylon garments ltd': ['babylon group']$
- 'viet pan-pacific nam dinh co,. ltd': ['viet pan pacific nam dinh']$
+'viet pan-pacific nam dinh co,. ltd': ['viet pan pacific nam dinh']$

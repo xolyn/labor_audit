@@ -17,7 +17,6 @@
  'hoyear garment ltd': ['hoyear cambodia garment ltd'],
  'rainbow textile l.l.c': ['rainbow textiles llc'],
 
-
  'u.i.c apparel manufacturing': ['uic apparel manufacturing'],
  'e-top': ['e-top vietnam'],
  'united apparel inc': ['united apparels'],
@@ -101,4 +100,4 @@
 * 'dai duong jsc branch': ['dat phuong jsc'],
 * 'seil': ['seila kennels security'],
  'quint major industrial vietnam': ['quint major industrial'],
- 'horizon manufacturing s.a': ['horizon manufacturing sa']
+ 'horizon manufacturing s.a': ['horizon manufacturing sa'],
