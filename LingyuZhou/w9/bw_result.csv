@@ -1,14 +1,14 @@
-FactoryBWID,BWFactoryName,Cname,repriskID,RRcompany_name,headquarters_country,headquarters_country_isocode,sectors
-64,Premium Apparel,premium apparel,111835,premium apparel sa,Haiti,HT,Personal and Household Goods
-81,"Sarah Co., Ltd.",sarah,2233058,sarah textile,Vietnam,VN,Personal and Household Goods
-109,Atlanta Garment Mfg. Co.,atlanta garment manufacturing co,2619075,atlanta garment manufacturing co llc,Jordan,JO,Personal and Household Goods | Financial Services
-148,Viet Tien Garment Cooperation,viet tien garment cooperation,2348618,viet tien garment corp,Vietnam,VN,Personal and Household Goods
-250,Aseel Universal Garments Mfg. Co.,aseel universal garments manufacturing co,2653862,aseel universal garments manufacturing company,Jordan,JO,Personal and Household Goods | Retail
-639,Musa Co. for Mfg. ready garments,musa garments factory,22694,musa garments factory,Jordan,JO,Personal and Household Goods
-1039,Sabrina Garment Mfg Corp.,sabrina garment mfg corp,109071,sabrina (cambodia) garment manufacturing corp,Cambodia,KH,Personal and Household Goods
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-change the following three names into one: ,,,,,,,
+FactoryBWID,BWFactoryName,Cname,repriskID,RRcompany_name,headquarters_country,headquarters_country_isocode,sectors,
+64,Premium Apparel,premium apparel,111835,premium apparel sa,Haiti,HT,Personal and Household Goods,
+81,"Sarah Co., Ltd.",sarah,2233058,sarah textile,Vietnam,VN,Personal and Household Goods,
+109,Atlanta Garment Mfg. Co.,atlanta garment manufacturing co,2619075,atlanta garment manufacturing co llc,Jordan,JO,Personal and Household Goods | Financial Services,
+148,Viet Tien Garment Cooperation,viet tien garment cooperation,2348618,viet tien garment corp,Vietnam,VN,Personal and Household Goods,
+250,Aseel Universal Garments Mfg. Co.,aseel universal garments manufacturing co,2653862,aseel universal garments manufacturing company,Jordan,JO,Personal and Household Goods | Retail,
+639,Musa Co. for Mfg. ready garments,musa garments factory,22694,musa garments factory,Jordan,JO,Personal and Household Goods,
+1039,Sabrina Garment Mfg Corp.,sabrina garment mfg corp,109071,sabrina (cambodia) garment manufacturing corp,Cambodia,KH,Personal and Household Goods,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+change the following three names into one: ,,,,,,,,
