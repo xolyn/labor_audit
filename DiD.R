@@ -11,23 +11,21 @@
 	# install.packages("")
 
 	## load R packages
-	lib <- c("haven","tidyverse","plm","did","modelsummary")
+	lib <- c("haven","tidyverse","plm","did","modelsummary","sjPlot")
 	lapply(lib,require,character.only=TRUE)
 
 	## clear up space
 	rm(list=ls())
 
 
-# sink("DiD_GT_240627.txt")
 # read in clean data
-	dt <- read_dta("June26audit variables for analysis.dta")
+	dt <- read_dta("Aug7 data for analysis.dta")
 
-	dt2 <- dt %>%
+	dt2 <- dt |>
 		mutate(
-			fid = fct(as.character(FactoryAssessedID)),
 			AssesmentDate = dmy(AssesmentDate),
+			fid = fct(as.character(FactoryAssessedID)),
 			ym = floor_date(AssesmentDate, unit="month"),
-			b1i = if_else(buyer1FTindex<0, NA, buyer1FTindex),
 			T1 = if_else(
 				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua") & AssesmentDate>=ymd(20170701),
 				"1","0"
@@ -39,10 +37,22 @@
 				Country=="Haiti" 			& AssesmentDate>=ymd(20170701)	~ "1",
 				Country=="Nicaragua" 	& AssesmentDate>=ymd(20180101)	~ "1",
 				TRUE 																									~ "0"
-				) %>% fct(levels=c("0","1")) # staggered treatment
-			)
+				) %>% fct(levels=c("0","1")), # staggered treatment
+			T2r = case_when(
+				Country=="Vietnam" 		& AssesmentDate>=ymd(20160601)	~ "1",
+				Country=="Jordan" 		& AssesmentDate>=ymd(20161101)	~ "1",
+				Country=="Indonesia" 	& AssesmentDate>=ymd(20170101)	~ "1",
+				Country=="Nicaragua" 	& AssesmentDate>=ymd(20180101)	~ "1",
+				Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
+				Country=="Cambodia"		& AssesmentDate>=ymd(20140301)	~ "1",
+				TRUE 																									~ "0"
+				) %>% fct(levels=c("0","1")) # robust treatment
+			) |>
+		filter(AssesmentDate<ymd(20200301)) |> # before COVID19
+		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln) # remove rows w/ missing values
 	# names(dt2)
-	# with(dt2, table(buyer1FTindex, exclude=NULL))
+	# with(dt2, table(mngindex13, exclude=NULL))
+	pdt2 <- pdata.frame(dt2, index=c("fid","ym"))
 
 	dt3 <- dt %>%
 		mutate(
@@ -106,7 +116,84 @@
 
 
 
-sink("DiD_GT_240628.txt")
+# DiD by two-way fixed effects panel models
+	dvs <- c("reportedcompl","similarCPcompl","distantCPcompl")
+	mos <- c("buyer1FTindexband","RRic5yr","mngindex13","union")
+
+## main
+	fs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2 + buyer1FTindexband + RRic5yr + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
+	fms <- lapply(dvs, function(dv) {
+		lapply(mos, function(mo) {
+			formula(paste0(dv, " ~ T2*", mo, " + ", paste(mos[-which(mos==mo)], collapse=" + "), " + femalepc + regularwkpc + size + factoryageln + Cycle"))
+			})
+		}) |> unlist(use.names=FALSE)
+
+	ms <- lapply(fs, function(f) plm(f, data=pdt2, effect="twoways", model="within"))
+	# lapply(ms, function(m) summary(m, vcov=function(x) vcovHC(x, method="ar")))
+	mms <- lapply(fms, function(fm) plm(fm, data=pdt2, effect="twoways", model="within"))
+	# lapply(mms[1:4], function(mm) summary(mm, vcov=function(x) vcovHC(x, method="ar")))
+
+
+## robust (recoding Cambodia and Haiti as treatment)
+	rfs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2r + buyer1FTindexband + RRic5yr + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
+	rfms <- lapply(dvs, function(dv) {
+		lapply(mos, function(mo) {
+			formula(paste0(dv, " ~ T2r*", mo, " + ", paste(mos[-which(mos==mo)], collapse=" + "), " + femalepc + regularwkpc + size + factoryageln + Cycle"))
+			})
+		}) |> unlist(use.names=FALSE)
+
+	rms <- lapply(rfs, function(rf) plm(rf, data=pdt2, effect="twoways", model="within"))
+	# lapply(rms, function(rm) summary(rm, vcov=function(x) vcovHC(x, method="ar")))
+	rmms <- lapply(rfms, function(rfm) plm(rfm, data=pdt2, effect="twoways", model="within"))
+	# lapply(rmms, function(rmm) summary(rmm, vcov=function(x) vcovHC(x, method="ar")))
+
+
+## tables & graphs
+	modelsummary(ms, output="main.xlsx", vcov=NULL, stars=TRUE)
+	modelsummary(mms, output="moderators.xlsx", vcov=function(x) plm::vcovHC(x, method="ar"), stars=TRUE)
+	sapply(1:4, function(i) {
+		plot_model(mms[[i]], type="pred", terms=c("T2",mos[i]))
+		ggsave(paste0("moderator_",mos[i],".png"))
+		})
+	plot_model(mms[[3]], type="pred", terms=c("T2","mngindex13 [0,13]"))
+
+	modelsummary(rms, output="rmain.xlsx", vcov=function(x) plm::vcovHC(x, method="ar"), stars=TRUE)
+	modelsummary(rmms, output="rmoderators.xlsx", vcov=function(x) plm::vcovHC(x, method="ar"), stars=TRUE)
+	sapply(1:4, function(i) {
+		plot_model(rmms[[i]], type="pred", terms=c("T2r",mos[i]))
+		ggsave(paste0("r_moderator_",mos[i],".png"))
+		})
+	plot_model(rmms[[3]], type="pred", terms=c("T2r","mngindex13 [0,13]"))
+
+
+
+## TESTING CODES
+	m_r_2 <- plm(reportedcompl ~ T2 + buyer1FTindexband + RRic5yr + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	summary(m_r_2, vcov=function(x) vcovHC(x, method="ar"))
+
+	m_r_2b <- plm(reportedcompl ~ T2*buyer1FTindexband + RRic5yr + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	summary(m_r_2b, vcov=function(x) vcovHC(x, method="ar"))
+	m_r_2n <- plm(reportedcompl ~ T2*RRic5yr + buyer1FTindexband + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	summary(m_r_2n, vcov=function(x) vcovHC(x, method="ar"))
+	m_r_2m <- plm(reportedcompl ~ T2*mngindex13 + buyer1FTindexband + RRic5yr + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	summary(m_r_2m, vcov=function(x) vcovHC(x, method="ar"))
+	m_r_2u <- plm(reportedcompl ~ T2*union + buyer1FTindexband + RRic5yr + mngindex13 + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	summary(m_r_2u, vcov=function(x) vcovHC(x, method="ar"))
+
+	m <- list(
+		"reported/uniform"=m_r_1, "similar/uniform"=m_s_1, "distant/uniform"=m_d_1, 
+		"reported/staggered"=m_r_2, "similar/staggered"=m_s_2, "distant/staggered"=m_d_2
+		)
+	modelplot(
+		models=m,
+		coef_map=c(
+			"T21","T11"
+			)
+		) + geom_vline(xintercept=0) + scale_colour_brewer(palette="Set1") + theme_bw() + labs(title="DiD by FE panel models")
+	# ggsave("DID_FE_240623.png")
+
+
+
 # DiD by Callaway and Sant'Anna (2021)
 ## group-time ATEs for each of three outcomes
 	dvs <- c("reportedcompl","similarCPcompl","distantCPcompl")
@@ -133,7 +220,6 @@ sink("DiD_GT_240628.txt")
 		ggdid(m_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title=paste(dvs_labels[i],"Items"), y="Countries")
 		ggsave(paste0("DiD_group_",dvs_labels[i],".png"), width=8, height=5)
 	}
-sink()
 
 
 ## moderation
@@ -203,64 +289,3 @@ sink()
 
 	# # agg.simple <- aggte(m, type="simple", na.rm=TRUE)
 	# # summary(agg.simple)
-
-
-
-# DiD by two-way fixed effects panel models
-## reported
-	m_r_1 <- plm(reportedcompl ~ T1 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_r_1, vcov=function(x) vcovHC(x, method="ar"))
-
-	m_r_2 <- plm(reportedcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_r_2, vcov=function(x) vcovHC(x, method="ar"))
-
-	m_r_2u <- plm(reportedcompl ~ T2*union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_r_2u, vcov=function(x) vcovHC(x, method="ar"))
-	m_r_2m <- plm(reportedcompl ~ T2*mng + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_r_2m, vcov=function(x) vcovHC(x, method="ar"))
-	m_r_2b <- plm(reportedcompl ~ T2*b1i + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_r_2b, vcov=function(x) vcovHC(x, method="ar"))
-
-
-## similar
-	m_s_1 <- plm(similarCPcompl ~ T1 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_s_1, vcov=function(x) vcovHC(x, method="ar"))
-
-	m_s_2 <- plm(similarCPcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_s_2, vcov=function(x) vcovHC(x, method="ar"))
-
-	m_s_2u <- plm(similarCPcompl ~ T2*union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_s_2u, vcov=function(x) vcovHC(x, method="ar"))
-	m_s_2m <- plm(similarCPcompl ~ T2*mng + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_s_2m, vcov=function(x) vcovHC(x, method="ar"))
-	m_s_2b <- plm(similarCPcompl ~ T2*b1i + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_s_2b, vcov=function(x) vcovHC(x, method="ar"))
-
-
-## distant
-	m_d_1 <- plm(distantCPcompl ~ T1 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_d_1, vcov=function(x) vcovHC(x, method="ar"))
-
-	m_d_2 <- plm(distantCPcompl ~ T2 + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_d_2, vcov=function(x) vcovHC(x, method="ar"))
-
-	m_d_2u <- plm(distantCPcompl ~ T2*union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_d_2u, vcov=function(x) vcovHC(x, method="ar"))
-	m_d_2m <- plm(distantCPcompl ~ T2*mng + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_d_2m, vcov=function(x) vcovHC(x, method="ar"))
-	m_d_2b <- plm(distantCPcompl ~ T2*b1i + union + CBA + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym")) #  + mng
-	summary(m_d_2b, vcov=function(x) vcovHC(x, method="ar"))
-
-
-## coef plots
-	m <- list(
-		"reported/uniform"=m_r_1, "similar/uniform"=m_s_1, "distant/uniform"=m_d_1, 
-		"reported/staggered"=m_r_2, "similar/staggered"=m_s_2, "distant/staggered"=m_d_2
-		)
-	modelplot(
-		models=m,
-		coef_map=c(
-			"T21","T11"
-			)
-		) + geom_vline(xintercept=0) + scale_colour_brewer(palette="Set1") + theme_bw() + labs(title="DiD by FE panel models")
-	# ggsave("DID_FE_240623.png")
