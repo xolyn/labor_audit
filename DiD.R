@@ -11,11 +11,12 @@
 	# install.packages("")
 
 	## load R packages
-	lib <- c("haven","tidyverse","plm","did","modelsummary","sjPlot")
+	lib <- c("haven","tidyverse","plm","did","modelsummary","ggeffects")
 	lapply(lib,require,character.only=TRUE)
 
 	## clear up space
 	rm(list=ls())
+
 
 
 # read in clean data
@@ -131,7 +132,7 @@
 	ms <- lapply(fs, function(f) plm(f, data=pdt2, effect="twoways", model="within"))
 	# lapply(ms, function(m) summary(m, vcov=function(x) vcovHC(x, method="ar")))
 	mms <- lapply(fms, function(fm) plm(fm, data=pdt2, effect="twoways", model="within"))
-	# lapply(mms[1:4], function(mm) summary(mm, vcov=function(x) vcovHC(x, method="ar")))
+	# lapply(mms[4], function(mm) summary(mm, vcov=function(x) vcovHC(x, method="ar")))
 
 
 ## robust (recoding Cambodia and Haiti as treatment)
@@ -143,28 +144,31 @@
 		}) |> unlist(use.names=FALSE)
 
 	rms <- lapply(rfs, function(rf) plm(rf, data=pdt2, effect="twoways", model="within"))
-	# lapply(rms, function(rm) summary(rm, vcov=function(x) vcovHC(x, method="ar")))
+	# lapply(rms[1:4], function(rm) summary(rm, vcov=function(x) vcovHC(x, method="ar")))
 	rmms <- lapply(rfms, function(rfm) plm(rfm, data=pdt2, effect="twoways", model="within"))
-	# lapply(rmms, function(rmm) summary(rmm, vcov=function(x) vcovHC(x, method="ar")))
+	# lapply(rmms[4], function(rmm) summary(rmm, vcov=function(x) vcovHC(x, method="ar")))
 
 
-## tables & graphs
-	modelsummary(ms, output="main.xlsx", vcov=NULL, stars=TRUE)
-	modelsummary(mms, output="moderators.xlsx", vcov=function(x) plm::vcovHC(x, method="ar"), stars=TRUE)
+## regression tables
+	modelsummary(ms, output="main.xlsx", vcov=function(x) plm::vcovHC(x,method="ar"), stars=TRUE)
+	modelsummary(mms, output="moderators.xlsx", vcov=function(x) plm::vcovHC(x,method="ar"), stars=TRUE)
+
+	modelsummary(rms, output="rmain.xlsx", vcov=function(x) plm::vcovHC(x,method="ar"), stars=TRUE)
+	modelsummary(rmms, output="rmoderators.xlsx", vcov=function(x) plm::vcovHC(x,method="ar"), stars=TRUE)
+
+
+## moderation plots
+	options(ggeffects_margin = "empirical")
+
 	sapply(1:4, function(i) {
-		plot_model(mms[[i]], type="pred", terms=c("T2",mos[i]))
+		predict_response(mms[[i]], terms=c("T2",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot()
 		ggsave(paste0("moderator_",mos[i],".png"))
 		})
-	plot_model(mms[[3]], type="pred", terms=c("T2","mngindex13 [0,13]"))
 
-	modelsummary(rms, output="rmain.xlsx", vcov=function(x) plm::vcovHC(x, method="ar"), stars=TRUE)
-	modelsummary(rmms, output="rmoderators.xlsx", vcov=function(x) plm::vcovHC(x, method="ar"), stars=TRUE)
 	sapply(1:4, function(i) {
-		plot_model(rmms[[i]], type="pred", terms=c("T2r",mos[i]))
-		ggsave(paste0("r_moderator_",mos[i],".png"))
+		predict_response(rmms[[i]], terms=c("T2r",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot()
+		ggsave(paste0("rmoderator_",mos[i],".png"))
 		})
-	plot_model(rmms[[3]], type="pred", terms=c("T2r","mngindex13 [0,13]"))
-
 
 
 ## TESTING CODES
@@ -179,18 +183,6 @@
 	summary(m_r_2m, vcov=function(x) vcovHC(x, method="ar"))
 	m_r_2u <- plm(reportedcompl ~ T2*union + buyer1FTindexband + RRic5yr + mngindex13 + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
 	summary(m_r_2u, vcov=function(x) vcovHC(x, method="ar"))
-
-	m <- list(
-		"reported/uniform"=m_r_1, "similar/uniform"=m_s_1, "distant/uniform"=m_d_1, 
-		"reported/staggered"=m_r_2, "similar/staggered"=m_s_2, "distant/staggered"=m_d_2
-		)
-	modelplot(
-		models=m,
-		coef_map=c(
-			"T21","T11"
-			)
-		) + geom_vline(xintercept=0) + scale_colour_brewer(palette="Set1") + theme_bw() + labs(title="DiD by FE panel models")
-	# ggsave("DID_FE_240623.png")
 
 
 
