@@ -55,10 +55,11 @@
 	# with(dt2, table(mngindex13, exclude=NULL))
 	pdt2 <- pdata.frame(dt2, index=c("fid","ym"))
 
-	dt3 <- dt %>%
+	dt3 <- dt |>
 		mutate(
-			fid = as.integer(FactoryAssessedID),
 			AssesmentDate = dmy(AssesmentDate),	y = year(AssesmentDate), m = month(AssesmentDate),
+			fid = as.integer(FactoryAssessedID),
+			# ym = floor_date(AssesmentDate, unit="month"),
 			ym = format(AssesmentDate, "%Y%m") %>% as.integer, ym_r = dense_rank(ym),
 			ym2 = str_c(y, ceiling(m/2)) %>% as.integer, ym2_r = dense_rank(ym2),
 			yq = str_c(y, quarter(AssesmentDate)) %>% as.integer, yq_r = dense_rank(yq),
@@ -109,10 +110,21 @@
 				Country=="Haiti" 				~ 11, # AssesmentDate>=ymd(20170701)
 				Country=="Nicaragua" 		~ 13, # AssesmentDate>=ymd(20180101)
 				TRUE 										~ 0
+				),
+			T2r_ym = case_when(
+				Country=="Vietnam" 			~ 18, # AssesmentDate>=ymd(20160601)
+				Country=="Jordan" 			~ 23, # AssesmentDate>=ymd(20161101)
+				Country=="Indonesia" 		~ 25, # AssesmentDate>=ymd(20170101)
+				Country=="Nicaragua" 		~ 37, # AssesmentDate>=ymd(20180101)
+				Country=="Haiti" 				~ 1, 	# AssesmentDate>=ymd(20100101) & first obs w/ ym_r==1
+				Country=="Cambodia" 		~ 5, 	# AssesmentDate>=ymd(20140301) & first obs w/ ym_r==5
+				TRUE 										~ 0
 				)
-			)
+			) |>
+		filter(AssesmentDate<ymd(20200301)) |> # before COVID19
+		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln) # remove rows w/ missing values
 	# str(dt3$ym)
-	# with(dt3, table(yq, yq_r, exclude=NULL))
+	# with(subset(dt3,Country=="Cambodia"), table(ym_r, exclude=NULL))
 	# subset(dt3, subset=!is.na(Country)) %>% summarize(n=n(), .by=c(Country, ym)) %>% pivot_wider(names_from=Country, values_from=n) %>% print(n=Inf)
 
 
@@ -256,28 +268,35 @@
 
 
 ## TESTING CODES
-	# m <- att_gt(
-	# 	yname = "similarCPcompl", idname = "fid", tname = "ym_r", gname = "T2_ym",
-	# 	xformla = NULL, data = dt3,
-	# 	panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
-	# 	control_group = "nevertreated", #"notyettreated"
-	# 	est_method = "dr"
-	# 	)
+	m <- att_gt(
+		yname = "reportedcompl", idname = "fid", tname = "ym_r", gname = "T2_ym",
+		xformla = ~union, data = dt3,
+		panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
+		control_group = "nevertreated", #"notyettreated"
+		est_method = "dr"
+		)
+	m <- att_gt(
+		yname = "reportedcompl", idname = "fid", tname = "ym_r", gname = "T2r_ym",
+		xformla = NULL, data = dt3,
+		panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
+		control_group = "nevertreated", #"notyettreated"
+		est_method = "dr"
+		)
 
 	# summary(m)
 	# ggdid(m) + theme(axis.text.y=element_text(size=10), axis.text.x=element_text(angle=90, vjust=0.5, hjust=1, size=10))
 
-	# agg.es <- aggte(m, type="dynamic", na.rm=TRUE)
+	agg.es <- aggte(m, type="dynamic", na.rm=TRUE)
 	# summary(agg.es)
-	# ggdid(agg.es) + scale_x_continuous(expand=c(0.01,0), n.breaks=10)
+	ggdid(agg.es) + scale_x_continuous(expand=c(0.01,0), n.breaks=10)
 
-	# # agg.cs <- aggte(m, type="calendar", na.rm=TRUE)
-	# # summary(agg.cs)
-	# # ggdid(agg.cs) + scale_x_continuous(expand=c(0.01,0), guide=guide_axis(angle=90), n.breaks=10)
+	# agg.cs <- aggte(m, type="calendar", na.rm=TRUE)
+	# summary(agg.cs)
+	# ggdid(agg.cs) + scale_x_continuous(expand=c(0.01,0), guide=guide_axis(angle=90), n.breaks=10)
 
-	# agg.gs <- aggte(m, type="group", na.rm=TRUE)
-	# summary(agg.gs)
+	agg.gs <- aggte(m, type="group", na.rm=TRUE)
+	summary(agg.gs)
 	# ggdid(agg.gs) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"))
 
-	# # agg.simple <- aggte(m, type="simple", na.rm=TRUE)
-	# # summary(agg.simple)
+	agg.simple <- aggte(m, type="simple", na.rm=TRUE)
+	summary(agg.simple)
