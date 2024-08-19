@@ -59,7 +59,6 @@
 		mutate(
 			AssesmentDate = dmy(AssesmentDate),	y = year(AssesmentDate), m = month(AssesmentDate),
 			fid = as.integer(FactoryAssessedID),
-			# ym = floor_date(AssesmentDate, unit="month"),
 			ym = format(AssesmentDate, "%Y%m") %>% as.integer, ym_r = dense_rank(ym),
 			ym2 = str_c(y, ceiling(m/2)) %>% as.integer, ym2_r = dense_rank(ym2),
 			yq = str_c(y, quarter(AssesmentDate)) %>% as.integer, yq_r = dense_rank(yq),
@@ -110,22 +109,11 @@
 				Country=="Haiti" 				~ 11, # AssesmentDate>=ymd(20170701)
 				Country=="Nicaragua" 		~ 13, # AssesmentDate>=ymd(20180101)
 				TRUE 										~ 0
-				),
-			T2r_ym = case_when(
-				Country=="Vietnam" 			~ 18, # AssesmentDate>=ymd(20160601)
-				Country=="Jordan" 			~ 23, # AssesmentDate>=ymd(20161101)
-				Country=="Indonesia" 		~ 25, # AssesmentDate>=ymd(20170101)
-				Country=="Nicaragua" 		~ 37, # AssesmentDate>=ymd(20180101)
-				Country=="Haiti" 				~ 1, 	# AssesmentDate>=ymd(20100101) & first obs w/ ym_r==1
-				Country=="Cambodia" 		~ 5, 	# AssesmentDate>=ymd(20140301) & first obs w/ ym_r==5
-				TRUE 										~ 0
 				)
 			) |>
-		filter(AssesmentDate<ymd(20200301)) |> # before COVID19
-		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln) # remove rows w/ missing values
-	# str(dt3$ym)
-	# with(subset(dt3,Country=="Cambodia"), table(ym_r, exclude=NULL))
-	# subset(dt3, subset=!is.na(Country)) %>% summarize(n=n(), .by=c(Country, ym)) %>% pivot_wider(names_from=Country, values_from=n) %>% print(n=Inf)
+		filter(AssesmentDate<ymd(20200301)) |>
+		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln)
+	# str(dt3$ym); dt3 |> arrange(ym) |> distinct(ym,ym_r) |> filter(ym==201801) |> print(n=Inf) # look up ym_r for the corresponding ym
 
 
 
@@ -199,11 +187,11 @@
 
 
 # DiD by Callaway and Sant'Anna (2021)
-## group-time ATEs for each of three outcomes
-	dvs <- c("reportedcompl","similarCPcompl","distantCPcompl")
 	dvs_labels <- c("Reported","Similar","Distant")
 
-	m_gt <- lapply(dvs, function(dv) {
+## group-time ATEs for each of three outcomes
+	m_gts <- lapply(dvs, function(dv) {
+		set.seed(240819)
 		att_gt(
 			yname = dv, idname = "fid", tname = "ym_r", gname = "T2_ym",
 			xformla = NULL, data = dt3,
@@ -212,17 +200,27 @@
 			est_method = "dr"
 			)
 		})
+	# use the following code to understand the warning messages (in short, due to unbalanced panel and therefore missingness in certain periods)
+	# subset(dt3, subset=!is.na(Country)) |> summarize(n=n(), .by=c(ym,ym_r, Country)) |> pivot_wider(names_from=Country, values_from=n) |> print(n=Inf)
 
 	for (i in seq_along(dvs)) {
-		m_t <- aggte(m_gt[[i]], type="dynamic", na.rm=TRUE)
-		summary(m_t)
-		ggdid(m_t) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title=paste(dvs_labels[i],"Items"), x="Exposure Periods")
+		### pre-test the parallel assumption
+		m_e <- aggte(m_gts[[i]], type="dynamic", na.rm=TRUE)
+		# summary(m_e)
+		ggdid(m_e) + scale_x_continuous(expand=c(0.01,0), n.breaks=20) + labs(title=paste(dvs_labels[i],"Items"), x="Exposure Periods")
 		ggsave(paste0("DiD_dynamic_",dvs_labels[i],".png"), width=8, height=5)
 
-		m_g <- aggte(m_gt[[i]], type="group", na.rm=TRUE)
-		summary(m_g)
+		### summarize effects by country
+		m_g <- aggte(m_gts[[i]], type="group", na.rm=TRUE)
+		# summary(m_g)
 		ggdid(m_g) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua")) + labs(title=paste(dvs_labels[i],"Items"), y="Countries")
 		ggsave(paste0("DiD_group_",dvs_labels[i],".png"), width=8, height=5)
+
+		###	summarize the overall effect
+		m_s <- aggte(m_gts[[i]], type="simple", na.rm=TRUE)
+		sink(paste0("DiD_overall_",dvs_labels[i],".txt"))
+		summary(m_s)
+		sink()
 	}
 
 
@@ -270,33 +268,27 @@
 ## TESTING CODES
 	m <- att_gt(
 		yname = "reportedcompl", idname = "fid", tname = "ym_r", gname = "T2_ym",
-		xformla = ~union, data = dt3,
+		xformla = ~size+factoryageln, data = dt3,
 		panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
 		control_group = "nevertreated", #"notyettreated"
-		est_method = "dr"
+		est_method = "ipw"
 		)
-	m <- att_gt(
-		yname = "reportedcompl", idname = "fid", tname = "ym_r", gname = "T2r_ym",
-		xformla = NULL, data = dt3,
-		panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
-		control_group = "nevertreated", #"notyettreated"
-		est_method = "dr"
-		)
+	# warnings()
 
 	# summary(m)
-	# ggdid(m) + theme(axis.text.y=element_text(size=10), axis.text.x=element_text(angle=90, vjust=0.5, hjust=1, size=10))
+	ggdid(m) + theme(axis.text.y=element_text(size=10), axis.text.x=element_text(angle=90, vjust=0.5, hjust=1, size=10))
 
 	agg.es <- aggte(m, type="dynamic", na.rm=TRUE)
 	# summary(agg.es)
 	ggdid(agg.es) + scale_x_continuous(expand=c(0.01,0), n.breaks=10)
 
-	# agg.cs <- aggte(m, type="calendar", na.rm=TRUE)
+	agg.cs <- aggte(m, type="calendar", na.rm=TRUE)
 	# summary(agg.cs)
-	# ggdid(agg.cs) + scale_x_continuous(expand=c(0.01,0), guide=guide_axis(angle=90), n.breaks=10)
+	ggdid(agg.cs) + scale_x_continuous(expand=c(0.01,0), guide=guide_axis(angle=90), n.breaks=10)
 
 	agg.gs <- aggte(m, type="group", na.rm=TRUE)
-	summary(agg.gs)
-	# ggdid(agg.gs) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"))
+	# summary(agg.gs)
+	ggdid(agg.gs) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"))
 
 	agg.simple <- aggte(m, type="simple", na.rm=TRUE)
 	summary(agg.simple)
