@@ -1,0 +1,608 @@
+# pol
+Calzedonia  10
+Diesel  8
+Chanel  7
+ANTA Sports  6
+Dolce & Gabbana  6
+LL Bean  6
+New York & Co.   6
+Claire's Accessories  5
+Marc Jacobs  4
+Brooks Brothers  3
+New Yorker  3
+Max Mara  2
+Barney's New York  1
+Desigual  0
+Dior  0
+Heilan Home  0
+Jessica Simpson  0
+Liverpool  0
+Longchamp  0
+Mexx  0
+Nine West  0
+s. Oliver  0
+Sandro  0
+Anthropologie  20
+Urban Outfitters  20
+Michael Kors  20
+Sports Direct  18
+Aéropostale  16
+Dillards  16
+Kohl's  16
+Carolina Herrera  15
+Tory Burch  15
+Matalan  14
+Versace  14
+Youngor  14
+Ermenegildo Zenga  13
+Debenhams  30
+Abercrombie & Fitch  29
+Lacoste  29
+Monsoon Accessorize  29
+Ross Stores  29
+Russell Athletic  28
+Chico's  27
+Joe Fresh  27
+Triumph  27
+Valentino  27
+Burlington  26
+JD Sports  26
+Takko  26
+Dick's Sporting Goods  25
+Express   21
+Foot Locker  21
+Forever 21  21
+Neiman Marcus  21
+Sainsburys – Tu Clothing  21
+Falabella  40
+Ralph Lauren  40
+Costco – Kirkland Signature  39
+American Eagle  36
+J.Crew  36
+Under Armour  36
+Amazon  35
+Columbia Sportswear Co  33
+Armani  32
+El Corte Inglés  32
+The Buckle  32
+Kate Spade  31
+Lidl UK  31
+Monprix  49
+Kik  48
+COACH  46
+Champion   44
+Hanes  44
+Dressman  44
+JCPenney   44
+TJ Maxx  42
+Hudson's Bay  41 
+Sak's Fifth Avenue  41
+New Balance   60
+Lindex   59
+LOFT   59
+Louis Vuitton   59
+Nordstrom   59
+John Lewis  58
+Salvatore Ferragamo  58
+Primark  57
+Hermès  56 
+Miu Miu  56
+Prada   56
+Decathlon  54 
+Jack & Jones  54 
+Vero Moda  54
+Superdry  54 
+Mango  53 
+Benetton  52
+Bloomingdale's  52 
+Macy's  52 
+Victoria's Secret  52
+Cortefiel  51 
+GUESS?  51 
+ASOS   70
+Lululemon   70
+Next   70 
+OVS   69
+Uniqlo   68
+Walmart   68
+George at ASDA   67
+Tesco – F&F  67
+Lands' End  66
+New Look  66
+Asics Corporation  63
+bonprix  63
+Fendi   63
+Gildan Activewear   80
+Zalando   80
+Levi Strauss & Co   77
+G-Star  75
+Topshop   73
+Target   72 
+Esprit   90
+Puma   90
+Bershka   88
+Massimo Dutti   88
+Pull & Bear   88
+Stradivarius   88
+Zara   88
+Banana Republic   86
+Gap   86
+Old Navy   86
+Tchibo   86
+The North Face   84
+Timberland   84
+Vans   84
+Wrangler   84
+C&A   83
+Hugo Boss   83
+Converse   83
+Jordan   83
+Nike   83
+Burberry   82
+Gucci   100
+Bottega Veneta  98
+YSL  98
+Adidas   97
+Reebok  97
+Marks & Spencer  93
+H&M  92
+Calvin Klein  91
+Tommy Hilfiger  91
+Van Heusen  91
+
+# gov
+Abercrombie & Fitch  0
+Aéropostale  0
+Amazon  0
+Anthropologie  0
+Urban Outfitters  0
+Barney's New York  0
+Brooks Brothers  0
+Claire's Accessories  0
+Desigual  0
+Diesel  0
+Dior  0
+Dolce & Gabbana  0
+Ermenegildo Zegna  0
+Express  0
+Foot Locker  0
+Forever 21  0
+Heilan Home  0
+Jessica Simpson  0
+Kate Spade  0
+Lacoste  0
+Liverpool  0
+LL Bean  0
+Longchamp  0
+Marc Jacobs  0
+Max Mara  0
+Mexx  0
+Michael Kors  0
+Neiman Marcus  0
+New York & Co.  0
+New Yorker  0
+Nine West  0
+s. Oliver  0
+Sandro  0
+Takko  0
+Tory Burch  0
+Triumph  0
+Youngor  0
+ANTA Sports  15
+Armani  15
+Calzedonia  15
+Carolina Herrera  15
+Chanel  15
+Costco – Kirkland Signature  15
+Dick's Sporting Goods  15
+El Corte Inglés  15
+Hermès  15
+Jack & Jones  15
+Vero Moda  15
+J.Crew  15
+Kohl's  15
+Lands' End  15
+Monoprix  15
+Nordstrom  15
+Ross Stores  15
+Sports Direct  15
+The Buckle  15
+Under Armour  15
+Versace  15
+American Eagle  23
+Chico's   23
+Debenhams  23
+Monsoon Accessorize  23
+New Balance  23
+New Look  23
+Russell Athletic  23
+Joe Fresh  38
+Mango  38
+Bloomingdale's  31
+Macy's  31
+Champion  31
+Hanes  31
+Cortefiel  31
+Decathlon  31
+Fendi  31 
+Louis Vuitton  31
+JCPenney  31
+John Lewis  31
+Lidl UK  31
+LOFT  31 
+Matalan  31 
+Ralph Lauren  31
+Sainsburys – Tu Clothing  31
+Salvatore Ferragamo   31
+Uniqlo  31 
+Valentino   31
+Asics Corporation  46
+Banana Republic   46
+Gap  46
+Old Navy  46
+Burlington  46
+George at ASDA  46
+GUESS?  46
+Hudson's Bay  46
+Sak's Fifth Avenue  46
+JD Sports  46
+Converse  46
+Jordan  46
+Nike  46
+Kik  46
+Miu Miu  46
+Prada  46
+Superdry  46
+Target  46
+TJ Maxx  46
+Benetton  54 
+Columbia Sportswear Co  54
+Dillards  54
+ASOS  69
+G-Star  69
+Lindex  69
+Tchibo  69
+Bershka  62
+Massimo Dutti  62
+Pull & Bear  62
+Stradivarius  62
+Zara  62
+bonprix  62
+Calvin Klein  62
+Tommy Hilfiger  62
+Van Heusen  62
+COACH  62
+Gilden Activewear  62
+Levi Strauss & Co  62
+Next  62
+OVS  62
+Primark   62
+Tesco – F&F   62
+Topshop  62
+Victoria's Secret  62 
+Walmart  62
+Burberry  77
+Dressman  77
+Falabella  77
+H&M  77
+Hugo Boss  77
+Zalando  77
+Adidas  85
+Reebok  85
+Lululemon  85
+C&A  100
+Esprit  100
+Marks & Spencer   100
+Bottega Veneta  92
+Gucci  92
+YSL  92
+Puma  92
+The North Face  92
+Timberland  92
+Vans  92
+Wrangler  92
+
+# trace
+Hudson's Bay  9
+Sak's Fifth Avenue  9
+Russell Athletic  9
+Abercrombie & Fitch  6
+Joe Fresh  6
+Bottega Veneta  1
+Gucci   1
+YSL  1
+Burberry  1
+Chanel  1
+COACH  1
+Fendi  1
+Louis Vuitton  1
+GUESS?  1
+Lands' End  1
+Miu Miu  1
+Prada  1
+OVS  1
+Ralph Lauren  1
+Salvatore Ferragamo  1
+Superdry  1
+Topshop  1
+Aéropostale  0
+Amazon  0
+American Eagle  0
+ANTA Sports  0
+Anthropologie  0
+Urban Outfitters  0
+Armani  0
+Barney's New York  0
+Bloomingdale's  0
+Macy's  0
+Brooks Brothers  0
+Burlington  0
+Calzedonia  0
+Carolina Herrera  0
+Chico's  0
+Claire's Accessories  0
+Cortefiel  0
+Costco – Kirkland Signature  0
+Decathlon  0
+Desigual  0
+Dick's Sporting Goods  0
+Diesel  0
+Dillards  0
+Dior  0
+Dolce & Gabbana  0
+El Corte Inglés  0
+Ermenegildo Zegna  0
+Express  0
+Falabella  0
+Foot Locker  0
+Forever 21  0
+Heilan Home  0
+JCPenney  0
+J.Crew  0
+JD Sports  0
+Jessica Simpson  0
+Kate Spade  0
+Kik  0
+Kohl's  0
+Lacoste  0
+Liverpool  0
+LL Bean  0
+Longchamp  0
+Mango  0
+Marc Jacobs  0
+Matalan  0
+Max Mara  0
+Mexx  0
+Michael Kors  0
+Monoprix  0
+Monsoon Accessorize   0
+Neiman Marcus  0
+New York & Co.  0
+New Yorker  0
+Nine West  0
+Nordstrom  0
+Ross Stores  0
+s. Oliver  0
+Sainsbury – Tu Clothing  0
+Sandro  0
+Sports Direct  0
+Takko  0
+The Buckle  0
+TJ Maxx  0
+Tory Burch  0
+Triumph   0
+Valentino   0
+Versace  0
+Victoria's Secret  0
+Walmart  0
+Youngor   0
+Zalando  0
+Champion   20
+Hanes  20
+Primark  20
+Target   19
+Jack & Jones  16
+Vero Moda   16
+Dressman  15
+Bershka   13
+Massimo Dutti   13
+Pull&Bear   13
+Stradivarius   13
+Zara  13
+George at ASDA  13
+Uniqlo  13
+Tesco  12
+Calvin Klein   11
+Tommy Hilfiger   11
+Van Heusen  11
+Gildan Activewear  11
+Lidl UK  11
+Hermès   29
+Marks & Spencer   27
+Lululemon   25
+Debenhams  24
+Hugo Boss  24
+New Look  24
+Tchibo  24
+Asics Corporation  22
+John Lewis   22
+Next  22
+Under Armour  22
+bonprix   21
+Columbia Sportswear Co   21
+LOFT   21
+Lindex  39
+The North Face   36 
+Timberland   36
+Vans   36
+Wrangler   36
+New Balance   35
+Benetton   34
+Converse   32
+Jordan   32
+Nike   32
+G-Star   49
+C&A   48 
+Esprit   48 
+Banana Republic   48
+Gap  48
+Old Navy   48
+H&M   47
+Adidas   46
+Reebok  46
+Levi Strauss & Co   46
+Puma   46
+ASOS   64
+
+# know
+Cortefiel  9
+Ermenegildo Zegna  9
+Lidl UK  9
+Aéropostale  8
+Joe Fresh  8
+Marc Jacobs  8
+Valentino  8
+Anthropologie  7
+Urban Outfitters  7
+Hermès  7
+Jack & Jones  7
+Vero Moda  7
+Monoprix  7
+Carolina Herrera  5
+Diesel  5
+Forever 21  5
+LL Bean  5
+Neiman Marcus  5
+Armani  4
+Claire's Accessories  4
+John Lewis  4
+Monsoon Accessorize  4
+New York & Co.  4
+Foot Locker  3
+Sports Direct  3
+Versace  3
+Fendi  1
+Louis Vuitton  1
+Matalan  1
+Miu Miu  1
+Prada  1
+Tory Burch  1
+ANTA Sports  0
+Barney's New York  0
+Brooks Brothers  0
+Chanel  0
+Desigual  0
+Dior  0
+Dolce & Gabbana  0
+Heilan Home  0
+Jessica Simpson  0
+Lacoste  0
+Liverpool  0
+Longchamp  0
+Max Mara  0
+Mexx  0
+New Yorker  0
+Nine West  0
+s. Oliver  0
+Sainsburys – Tu Clothing   0
+Sandro  0
+Youngor  0
+Costco – Kirkland Signature 20  
+
+Dick's Sporting Goods  20
+JCPenney  20
+Kate Spade  20
+Lands' End  20
+Under Armour   20
+bonprix  19
+Debenhams  19
+Dressman   19 
+Salvatore Ferragamo  19
+Superdry  19
+Victoria's Secret  19
+American Eagle  18
+Columbia Sportswear Co  18
+Dillards  18
+Bloomingdale's  18
+Macy's  18
+Chico's  16
+GUESS?  16
+J.Crew  16
+Converse  16
+Jordan  16
+Nike  16
+New Look  16
+Topshop  16
+Burlington  15
+JD Sports  15
+Mango  15
+OVS  15
+Ralph Lauren  15
+Decathlon  14
+El Corte Inglés  14
+Kohl's  14
+Nordstrom  14
+The Buckle  14
+Triumph  14
+Amazon  12
+Asics Corportaion  12
+Calzedonia  12
+Kik  12
+Michael Kors  12
+Ross Stores  12
+Takko  12
+Express  11
+Falabella  11
+New Balance  11
+Benetton  30
+George at ASDA  30
+Tesco – F&F   30
+COACH  28
+Hudson's Bay  28
+Sak's Fifth Avenue  28
+Burburry  27
+Gildan Activewear  27
+Uniqlo  27
+Hugo Boss  26
+Russell Athletic   26
+G-Star  24
+Champion  24
+Hanes  24
+Lindex  24
+Lululemon  24
+Walmart  24
+LOFT  23
+Abercrombie & Fitch  22
+Next  22
+TJ Maxx  22
+Zalando  22
+ASOS  20
+Calvin Klein  38
+Tommy Hilfiger  38
+Van Heusen  38
+H&M  38
+Primark  38
+Bershka  38
+Massimo Dutti  38
+Pull & Bear  38
+Stadivarius  38
+Zara  38
+Target  36
+Levi Strauss & Co  35
+The North Face  32
+Timberland  32
+Vans  32
+Wrangler  32
+Bottega Veneta  31
+Gucci  31
+YSL  31
+Tchibo  31
+Puma  50
+Adidas   45
+Reebok   45
+Esprit   43
+C&A   41
+Marks & Spencer  41
+Banana Republic  54
+Gap   54 
+Old Navy  54
