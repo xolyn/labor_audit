@@ -1,5 +1,5 @@
 adida:adidas
-aldi:aldi süd,aldi nord
+aldi:aldi süd
 armani ga:armani
 aÃ©ropostale:aeropostale
 bcbg maxazria inc:bcbgmaxazria
