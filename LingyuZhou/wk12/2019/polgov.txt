@@ -1,0 +1,27 @@
+adida:adidas
+aldi:aldi süd,aldi nord
+armani ga:armani
+aÃ©ropostale:aeropostale
+bcbg maxazria inc:bcbgmaxazria
+bershka bsk espana s.a:bershka
+columbia:columbia sportswear
+costco:costco - kirkland signature
+dick's:dick's sporting goods
+george:george at asda
+hanesbrands:hanes
+jc penney:jcpenney
+kmart:kmart - attention
+kohl:kohl's
+levis:levi strauss & co
+lidl:lidl gb
+llbean:ll bean
+macys:macy's
+new york:new york & company
+primark us:primark
+primary foreign service:primark
+s. oliver:s.oliver
+sainsbury:sainsbury's - tu clothing
+sketcher:skechers
+tesco:tesco - f&f
+urban outfitters:urban oufitters
+victoria secret:victoria's secret

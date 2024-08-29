@@ -21,6 +21,5 @@ new york:new york & co.
 primark us:primark
 primary foreign service:primark
 sainsbury:sainsburys – tu clothing
-target australia:target
 tesco:tesco – f&f
 victoria secret:victoria's secret

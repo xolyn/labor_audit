@@ -1,8 +1,5 @@
 asics:asics corportaion
-cohl's:chico's
-dsg:dick's sporting goods,dillards
 g-star international:g-star
-hansae:hanes
 hansbrands:hanes
 jc penny:jcpenney
 kohls:kohl's
