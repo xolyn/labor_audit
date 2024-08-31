@@ -1,0 +1,22 @@
+bcbg:bcbgmaxazria
+colombia:columbia sportswear
+cost co:costco - kirkland signature
+costo:costco - kirkland signature
+dick's sports:dick's sporting goods
+dillard's:dillards
+g-star:g-star raw
+itoyokado:ito-yokado
+iytoyokato:ito-yokado
+j crew:j.crew
+joefresh:joe fresh
+land's end:lands' end
+levi's:levi strauss & co
+marc jacob:marc jacobs
+mexx, tom taylor:mexx
+newlooks:new look
+ralph laurent:ralph lauren
+sainsbury's:sainsbury's - tu clothing
+soliver:s.oliver
+under amour:under armour
+uniqulo:uniqlo
+zalando, karstadt, daniel hechter:zalando
