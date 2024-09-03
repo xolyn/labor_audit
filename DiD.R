@@ -20,17 +20,18 @@
 
 
 # read in clean data
-	dt <- read_dta("Aug7 data for analysis.dta")
+	dt <- read_dta("Aug31 data for analysis.dta")
 
 	dt2 <- dt |>
 		mutate(
 			AssesmentDate = dmy(AssesmentDate),
 			fid = fct(as.character(FactoryAssessedID)),
 			ym = floor_date(AssesmentDate, unit="month"),
-			T1 = if_else(
-				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua") & AssesmentDate>=ymd(20170701),
-				"1","0"
-				) %>% fct(levels=c("0","1")), # uniform treatment
+			Cycle = fct(as.character(Cycle)),
+			# T1 = if_else(
+			# 	Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua") & AssesmentDate>=ymd(20170701),
+			# 	"1","0"
+			# 	) %>% fct(levels=c("0","1")), # uniform treatment
 			T2 = case_when(
 				Country=="Vietnam" 		& AssesmentDate>=ymd(20160601)	~ "1",
 				Country=="Jordan" 		& AssesmentDate>=ymd(20161101)	~ "1",
@@ -43,8 +44,9 @@
 				Country=="Vietnam" 		& AssesmentDate>=ymd(20160601)	~ "1",
 				Country=="Jordan" 		& AssesmentDate>=ymd(20161101)	~ "1",
 				Country=="Indonesia" 	& AssesmentDate>=ymd(20170101)	~ "1",
+				Country=="Haiti" 			& AssesmentDate>=ymd(20170701)	~ "1",
 				Country=="Nicaragua" 	& AssesmentDate>=ymd(20180101)	~ "1",
-				Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
+				# Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
 				Country=="Cambodia"		& AssesmentDate>=ymd(20140301)	~ "1",
 				TRUE 																									~ "0"
 				) %>% fct(levels=c("0","1")) # robust treatment
@@ -60,32 +62,32 @@
 			AssesmentDate = dmy(AssesmentDate),	y = year(AssesmentDate), m = month(AssesmentDate),
 			fid = as.integer(FactoryAssessedID),
 			ym = format(AssesmentDate, "%Y%m") %>% as.integer, ym_r = dense_rank(ym),
-			ym2 = str_c(y, ceiling(m/2)) %>% as.integer, ym2_r = dense_rank(ym2),
-			yq = str_c(y, quarter(AssesmentDate)) %>% as.integer, yq_r = dense_rank(yq),
-			T1 = if_else(
-				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
-				2017,0
-				),
-			T1_ym = if_else(
-				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
-				31,0
-				), # dense_rank(201707)==31
-			T1_ym2 = if_else(
-				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
-				16,0 # dense_rank(20174)==16
-				),
-			T1_yq = if_else(
-				Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
-				11,0 # dense_rank(20173)==11
-				),
-			T2 = case_when(
-				Country=="Vietnam" 			~ 2016, # AssesmentDate>=ymd(20160601)
-				Country=="Jordan" 			~ 2016, # AssesmentDate>=ymd(20161101)
-				Country=="Indonesia" 		~ 2017, # AssesmentDate>=ymd(20170101)
-				Country=="Haiti" 				~ 2017, # AssesmentDate>=ymd(20170701)
-				Country=="Nicaragua" 		~ 2018, # AssesmentDate>=ymd(20180101)
-				TRUE 										~ 0
-				),
+			# ym2 = str_c(y, ceiling(m/2)) %>% as.integer, ym2_r = dense_rank(ym2),
+			# yq = str_c(y, quarter(AssesmentDate)) %>% as.integer, yq_r = dense_rank(yq),
+			# T1 = if_else(
+			# 	Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
+			# 	2017,0
+			# 	),
+			# T1_ym = if_else(
+			# 	Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
+			# 	31,0
+			# 	), # dense_rank(201707)==31
+			# T1_ym2 = if_else(
+			# 	Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
+			# 	16,0 # dense_rank(20174)==16
+			# 	),
+			# T1_yq = if_else(
+			# 	Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"),
+			# 	11,0 # dense_rank(20173)==11
+			# 	),
+			# T2 = case_when(
+			# 	Country=="Vietnam" 			~ 2016, # AssesmentDate>=ymd(20160601)
+			# 	Country=="Jordan" 			~ 2016, # AssesmentDate>=ymd(20161101)
+			# 	Country=="Indonesia" 		~ 2017, # AssesmentDate>=ymd(20170101)
+			# 	Country=="Haiti" 				~ 2017, # AssesmentDate>=ymd(20170701)
+			# 	Country=="Nicaragua" 		~ 2018, # AssesmentDate>=ymd(20180101)
+			# 	TRUE 										~ 0
+			# 	),
 			T2_ym = case_when(
 				Country=="Vietnam" 			~ 18, # AssesmentDate>=ymd(20160601)
 				Country=="Jordan" 			~ 23, # AssesmentDate>=ymd(20161101)
@@ -94,22 +96,22 @@
 				Country=="Nicaragua" 		~ 37, # AssesmentDate>=ymd(20180101)
 				TRUE 										~ 0
 				),
-			T2_ym2 = case_when(
-				Country=="Vietnam" 			~ 9, # AssesmentDate>=ymd(20160601)
-				Country=="Jordan" 			~ 12, # AssesmentDate>=ymd(20161101)
-				Country=="Indonesia" 		~ 13, # AssesmentDate>=ymd(20170101)
-				Country=="Haiti" 				~ 16, # AssesmentDate>=ymd(20170701)
-				Country=="Nicaragua" 		~ 19, # AssesmentDate>=ymd(20180101)
-				TRUE 										~ 0
-				),
-			T2_yq = case_when(
-				Country=="Vietnam" 			~ 6, # AssesmentDate>=ymd(20160601)
-				Country=="Jordan" 			~ 8, # AssesmentDate>=ymd(20161101)
-				Country=="Indonesia" 		~ 9, # AssesmentDate>=ymd(20170101)
-				Country=="Haiti" 				~ 11, # AssesmentDate>=ymd(20170701)
-				Country=="Nicaragua" 		~ 13, # AssesmentDate>=ymd(20180101)
-				TRUE 										~ 0
-				)
+			# T2_ym2 = case_when(
+			# 	Country=="Vietnam" 			~ 9, # AssesmentDate>=ymd(20160601)
+			# 	Country=="Jordan" 			~ 12, # AssesmentDate>=ymd(20161101)
+			# 	Country=="Indonesia" 		~ 13, # AssesmentDate>=ymd(20170101)
+			# 	Country=="Haiti" 				~ 16, # AssesmentDate>=ymd(20170701)
+			# 	Country=="Nicaragua" 		~ 19, # AssesmentDate>=ymd(20180101)
+			# 	TRUE 										~ 0
+			# 	),
+			# T2_yq = case_when(
+			# 	Country=="Vietnam" 			~ 6, # AssesmentDate>=ymd(20160601)
+			# 	Country=="Jordan" 			~ 8, # AssesmentDate>=ymd(20161101)
+			# 	Country=="Indonesia" 		~ 9, # AssesmentDate>=ymd(20170101)
+			# 	Country=="Haiti" 				~ 11, # AssesmentDate>=ymd(20170701)
+			# 	Country=="Nicaragua" 		~ 13, # AssesmentDate>=ymd(20180101)
+			# 	TRUE 										~ 0
+			# 	)
 			) |>
 		filter(AssesmentDate<ymd(20200301)) |>
 		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln)
@@ -172,16 +174,16 @@
 
 
 ## TESTING CODES
-	m_r_2 <- plm(reportedcompl ~ T2 + buyer1FTindexband + RRic5yr + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	m_r_2 <- plm(reportedcompl ~ T2 + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
 	summary(m_r_2, vcov=function(x) vcovHC(x, method="ar"))
 
-	m_r_2b <- plm(reportedcompl ~ T2*buyer1FTindexband + RRic5yr + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	m_r_2b <- plm(reportedcompl ~ T2*buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
 	summary(m_r_2b, vcov=function(x) vcovHC(x, method="ar"))
-	m_r_2n <- plm(reportedcompl ~ T2*RRic5yr + buyer1FTindexband + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	m_r_2n <- plm(reportedcompl ~ T2*RRic2010 + buyer1FTindexband + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
 	summary(m_r_2n, vcov=function(x) vcovHC(x, method="ar"))
-	m_r_2m <- plm(reportedcompl ~ T2*mngindex13 + buyer1FTindexband + RRic5yr + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	m_r_2m <- plm(reportedcompl ~ T2*mngindex13 + buyer1FTindexband + RRic2010 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
 	summary(m_r_2m, vcov=function(x) vcovHC(x, method="ar"))
-	m_r_2u <- plm(reportedcompl ~ T2*union + buyer1FTindexband + RRic5yr + mngindex13 + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	m_r_2u <- plm(reportedcompl ~ T2*union + buyer1FTindexband + RRic2010 + mngindex13 + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
 	summary(m_r_2u, vcov=function(x) vcovHC(x, method="ar"))
 
 
