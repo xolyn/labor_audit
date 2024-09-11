@@ -163,12 +163,12 @@
 	options(ggeffects_margin = "empirical")
 
 	sapply(1:4, function(i) {
-		predict_response(mms[[i]], terms=c("T2",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot()
+		predict_response(mms[[i]], terms=c("T2",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
 		ggsave(paste0("moderator_",mos[i],".png"))
 		})
 
 	sapply(1:4, function(i) {
-		predict_response(rmms[[i]], terms=c("T2r",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot()
+		predict_response(rmms[[i]], terms=c("T2r",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
 		ggsave(paste0("rmoderator_",mos[i],".png"))
 		})
 
