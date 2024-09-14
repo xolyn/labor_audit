@@ -27,7 +27,8 @@
 			AssesmentDate = dmy(AssesmentDate),
 			fid = fct(as.character(FactoryAssessedID)),
 			ym = floor_date(AssesmentDate, unit="month"),
-			Cycle = fct(as.character(Cycle)),
+			Cycle = as.factor(Cycle),
+			buyer1FTindexband = as.factor(ifelse(buyer1FTindexband==0, 99,buyer1FTindexband)),
 			# T1 = if_else(
 			# 	Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua") & AssesmentDate>=ymd(20170701),
 			# 	"1","0"
@@ -121,10 +122,10 @@
 
 # DiD by two-way fixed effects panel models
 	dvs <- c("reportedcompl","similarCPcompl","distantCPcompl")
-	mos <- c("buyer1FTindexband","RRic5yr","mngindex13","union")
+	mos <- c("buyer1FTindexband","RRic2010","mngindex13","union")
 
 ## main
-	fs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2 + buyer1FTindexband + RRic5yr + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
+	fs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2 + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
 	fms <- lapply(dvs, function(dv) {
 		lapply(mos, function(mo) {
 			formula(paste0(dv, " ~ T2*", mo, " + ", paste(mos[-which(mos==mo)], collapse=" + "), " + femalepc + regularwkpc + size + factoryageln + Cycle"))
@@ -138,7 +139,7 @@
 
 
 ## robust (recoding Cambodia and Haiti as treatment)
-	rfs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2r + buyer1FTindexband + RRic5yr + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
+	rfs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2r + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
 	rfms <- lapply(dvs, function(dv) {
 		lapply(mos, function(mo) {
 			formula(paste0(dv, " ~ T2r*", mo, " + ", paste(mos[-which(mos==mo)], collapse=" + "), " + femalepc + regularwkpc + size + factoryageln + Cycle"))
