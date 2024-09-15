@@ -25,7 +25,7 @@
 	dt2 <- dt |>
 		mutate(
 			AssesmentDate = dmy(AssesmentDate),
-			fid = fct(as.character(FactoryAssessedID)),
+			fid = as.factor(FactoryAssessedID),
 			ym = floor_date(AssesmentDate, unit="month"),
 			Cycle = as.factor(Cycle),
 			buyer1FTindexband = as.factor(ifelse(buyer1FTindexband==0, 99,buyer1FTindexband)),
@@ -45,9 +45,9 @@
 				Country=="Vietnam" 		& AssesmentDate>=ymd(20160601)	~ "1",
 				Country=="Jordan" 		& AssesmentDate>=ymd(20161101)	~ "1",
 				Country=="Indonesia" 	& AssesmentDate>=ymd(20170101)	~ "1",
-				Country=="Haiti" 			& AssesmentDate>=ymd(20170701)	~ "1",
+				# Country=="Haiti" 			& AssesmentDate>=ymd(20170701)	~ "1",
 				Country=="Nicaragua" 	& AssesmentDate>=ymd(20180101)	~ "1",
-				# Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
+				Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
 				Country=="Cambodia"		& AssesmentDate>=ymd(20140301)	~ "1",
 				TRUE 																									~ "0"
 				) %>% fct(levels=c("0","1")) # robust treatment
