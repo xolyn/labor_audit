@@ -27,7 +27,7 @@
 			AssesmentDate = dmy(AssesmentDate),
 			fid = as.factor(FactoryAssessedID),
 			ym = floor_date(AssesmentDate, unit="month"),
-			Cycle = as.factor(Cycle),
+			# Cycle = as.factor(Cycle),
 			buyer1FTindexband = as.factor(ifelse(buyer1FTindexband==0, 99,buyer1FTindexband)),
 			# T1 = if_else(
 			# 	Country%in%c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua") & AssesmentDate>=ymd(20170701),
@@ -40,7 +40,7 @@
 				Country=="Haiti" 			& AssesmentDate>=ymd(20170701)	~ "1",
 				Country=="Nicaragua" 	& AssesmentDate>=ymd(20180101)	~ "1",
 				TRUE 																									~ "0"
-				) %>% fct(levels=c("0","1")), # staggered treatment
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # staggered treatment
 			T2r = case_when(
 				Country=="Vietnam" 		& AssesmentDate>=ymd(20160601)	~ "1",
 				Country=="Jordan" 		& AssesmentDate>=ymd(20161101)	~ "1",
@@ -50,7 +50,7 @@
 				Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
 				Country=="Cambodia"		& AssesmentDate>=ymd(20140301)	~ "1",
 				TRUE 																									~ "0"
-				) %>% fct(levels=c("0","1")) # robust treatment
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")) # robust treatment
 			) |>
 		filter(AssesmentDate<ymd(20200301)) |> # before COVID19
 		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln) # remove rows w/ missing values
@@ -135,7 +135,7 @@
 	ms <- lapply(fs, function(f) plm(f, data=pdt2, effect="twoways", model="within"))
 	# lapply(ms, function(m) summary(m, vcov=function(x) vcovHC(x, method="ar")))
 	mms <- lapply(fms, function(fm) plm(fm, data=pdt2, effect="twoways", model="within"))
-	# lapply(mms[4], function(mm) summary(mm, vcov=function(x) vcovHC(x, method="ar")))
+	# lapply(mms[3], function(mm) summary(mm, vcov=function(x) vcovHC(x, method="ar")))
 
 
 ## robust (recoding Cambodia and Haiti as treatment)
@@ -149,7 +149,7 @@
 	rms <- lapply(rfs, function(rf) plm(rf, data=pdt2, effect="twoways", model="within"))
 	# lapply(rms[1:4], function(rm) summary(rm, vcov=function(x) vcovHC(x, method="ar")))
 	rmms <- lapply(rfms, function(rfm) plm(rfm, data=pdt2, effect="twoways", model="within"))
-	# lapply(rmms[4], function(rmm) summary(rmm, vcov=function(x) vcovHC(x, method="ar")))
+	# lapply(rmms[3], function(rmm) summary(rmm, vcov=function(x) vcovHC(x, method="ar")))
 
 
 ## regression tables
@@ -163,15 +163,30 @@
 ## moderation plots
 	options(ggeffects_margin = "empirical")
 
-	sapply(1:4, function(i) {
-		predict_response(mms[[i]], terms=c("T2",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
-		ggsave(paste0("moderator_",mos[i],".png"))
-		})
+	predict_response(mms[[1]], terms=c("T2",mos[1]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(show_title=FALSE, show_x_title=FALSE, connect_lines=TRUE, name="Predicted compliance for reported standards") + labs(colour="Fashion Transporancy Index Band (buyer 1)") + theme(legend.position = "bottom")
+	ggsave(paste0("moderator_",mos[1],".png"))
 
-	sapply(1:4, function(i) {
-		predict_response(rmms[[i]], terms=c("T2r",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
-		ggsave(paste0("rmoderator_",mos[i],".png"))
-		})
+	predict_response(mms[[2]], terms=c("T2",mos[2]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(show_title=FALSE, show_x_title=FALSE, connect_lines=TRUE, name="Predicted compliance for reported standards") + labs(colour="RepRisk Incidents (since 2010)") + theme(legend.position = "bottom") + scale_colour_brewer(palette = "Set1", labels = c("-1 SD", "Mean", "+1 SD"))
+	ggsave(paste0("moderator_",mos[2],".png"))
+
+	predict_response(mms[[3]], terms=c("T2",mos[3]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(show_title=FALSE, show_x_title=FALSE, connect_lines=TRUE, name="Predicted compliance for reported standards") + labs(colour="Management System Index") + theme(legend.position = "bottom") + scale_colour_brewer(palette = "Set1", labels = c("-1 SD", "Mean", "+1 SD"))
+	ggsave(paste0("moderator_",mos[3],".png"))
+
+	predict_response(mms[[4]], terms=c("T2",mos[4]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(show_title=FALSE, show_x_title=FALSE, connect_lines=TRUE, name="Predicted compliance for reported standards") + labs(colour="Union") + theme(legend.position = "bottom") + scale_colour_brewer(palette = "Set1", labels = c("No", "Yes"))
+	ggsave(paste0("moderator_",mos[4],".png"))
+
+
+	predict_response(rmms[[1]], terms=c("T2r",mos[1]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(show_title=FALSE, show_x_title=FALSE, connect_lines=TRUE, name="Predicted compliance for reported standards") + labs(colour="Fashion Transporancy Index Band (buyer 1)") + theme(legend.position = "bottom")
+	ggsave(paste0("rmoderator_",mos[1],".png"))
+
+	predict_response(rmms[[2]], terms=c("T2r",mos[2]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(show_title=FALSE, show_x_title=FALSE, connect_lines=TRUE, name="Predicted compliance for reported standards") + labs(colour="RepRisk Incidents (since 2010)") + theme(legend.position = "bottom") + scale_colour_brewer(palette = "Set1", labels = c("-1 SD", "Mean", "+1 SD"))
+	ggsave(paste0("rmoderator_",mos[2],".png"))
+
+	predict_response(rmms[[3]], terms=c("T2r",mos[3]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(show_title=FALSE, show_x_title=FALSE, connect_lines=TRUE, name="Predicted compliance for reported standards") + labs(colour="Management System Index") + theme(legend.position = "bottom") + scale_colour_brewer(palette = "Set1", labels = c("-1 SD", "Mean", "+1 SD"))
+	ggsave(paste0("rmoderator_",mos[3],".png"))
+
+	predict_response(rmms[[4]], terms=c("T2r",mos[4]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(show_title=FALSE, show_x_title=FALSE, connect_lines=TRUE, name="Predicted compliance for reported standards") + labs(colour="Union") + theme(legend.position = "bottom") + scale_colour_brewer(palette = "Set1", labels = c("No", "Yes"))
+	ggsave(paste0("rmoderator_",mos[4],".png"))
 
 
 ## TESTING CODES
@@ -186,6 +201,16 @@
 	summary(m_r_2m, vcov=function(x) vcovHC(x, method="ar"))
 	m_r_2u <- plm(reportedcompl ~ T2*union + buyer1FTindexband + RRic2010 + mngindex13 + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
 	summary(m_r_2u, vcov=function(x) vcovHC(x, method="ar"))
+
+	sapply(1:4, function(i) {
+		predict_response(mms[[i]], terms=c("T2",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
+		ggsave(paste0("moderator_",mos[i],".png"))
+		})
+
+	sapply(1:4, function(i) {
+		predict_response(rmms[[i]], terms=c("T2r",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
+		ggsave(paste0("rmoderator_",mos[i],".png"))
+		})
 
 
 
