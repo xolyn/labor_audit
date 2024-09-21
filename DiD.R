@@ -63,6 +63,8 @@
 			AssesmentDate = dmy(AssesmentDate),	y = year(AssesmentDate), m = month(AssesmentDate),
 			fid = as.integer(FactoryAssessedID),
 			ym = format(AssesmentDate, "%Y%m") %>% as.integer, ym_r = dense_rank(ym),
+			# Cycle = as.factor(Cycle),
+			buyer1FTindexband = as.factor(ifelse(buyer1FTindexband==0, 99,buyer1FTindexband)),
 			# ym2 = str_c(y, ceiling(m/2)) %>% as.integer, ym2_r = dense_rank(ym2),
 			# yq = str_c(y, quarter(AssesmentDate)) %>% as.integer, yq_r = dense_rank(yq),
 			# T1 = if_else(
@@ -117,6 +119,7 @@
 		filter(AssesmentDate<ymd(20200301)) |>
 		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln)
 	# str(dt3$ym); dt3 |> arrange(ym) |> distinct(ym,ym_r) |> filter(ym==201801) |> print(n=Inf) # look up ym_r for the corresponding ym
+	# cannot conduct robustness analysis such as in TWFE because the method excludes units that have no untreated obs (i.e., factories in Haiti and Cambodia will be excluded)
 
 
 
@@ -190,27 +193,27 @@
 
 
 ## TESTING CODES
-	m_r_2 <- plm(reportedcompl ~ T2 + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
-	summary(m_r_2, vcov=function(x) vcovHC(x, method="ar"))
+	# m_r_2 <- plm(reportedcompl ~ T2 + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	# summary(m_r_2, vcov=function(x) vcovHC(x, method="ar"))
 
-	m_r_2b <- plm(reportedcompl ~ T2*buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
-	summary(m_r_2b, vcov=function(x) vcovHC(x, method="ar"))
-	m_r_2n <- plm(reportedcompl ~ T2*RRic2010 + buyer1FTindexband + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
-	summary(m_r_2n, vcov=function(x) vcovHC(x, method="ar"))
-	m_r_2m <- plm(reportedcompl ~ T2*mngindex13 + buyer1FTindexband + RRic2010 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
-	summary(m_r_2m, vcov=function(x) vcovHC(x, method="ar"))
-	m_r_2u <- plm(reportedcompl ~ T2*union + buyer1FTindexband + RRic2010 + mngindex13 + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
-	summary(m_r_2u, vcov=function(x) vcovHC(x, method="ar"))
+	# m_r_2b <- plm(reportedcompl ~ T2*buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	# summary(m_r_2b, vcov=function(x) vcovHC(x, method="ar"))
+	# m_r_2n <- plm(reportedcompl ~ T2*RRic2010 + buyer1FTindexband + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	# summary(m_r_2n, vcov=function(x) vcovHC(x, method="ar"))
+	# m_r_2m <- plm(reportedcompl ~ T2*mngindex13 + buyer1FTindexband + RRic2010 + union + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	# summary(m_r_2m, vcov=function(x) vcovHC(x, method="ar"))
+	# m_r_2u <- plm(reportedcompl ~ T2*union + buyer1FTindexband + RRic2010 + mngindex13 + femalepc + regularwkpc + size + factoryageln + Cycle, data=dt2, effect="twoways", model="within", index=c("fid","ym"))
+	# summary(m_r_2u, vcov=function(x) vcovHC(x, method="ar"))
 
-	sapply(1:4, function(i) {
-		predict_response(mms[[i]], terms=c("T2",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
-		ggsave(paste0("moderator_",mos[i],".png"))
-		})
+	# sapply(1:4, function(i) {
+	# 	predict_response(mms[[i]], terms=c("T2",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
+	# 	ggsave(paste0("moderator_",mos[i],".png"))
+	# 	})
 
-	sapply(1:4, function(i) {
-		predict_response(rmms[[i]], terms=c("T2r",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
-		ggsave(paste0("rmoderator_",mos[i],".png"))
-		})
+	# sapply(1:4, function(i) {
+	# 	predict_response(rmms[[i]], terms=c("T2r",mos[i]), vcov_fun=plm::vcovHC, vcov_args=list(method="ar")) |> plot(connect_lines=TRUE)
+	# 	ggsave(paste0("rmoderator_",mos[i],".png"))
+	# 	})
 
 
 
@@ -219,7 +222,7 @@
 
 ## group-time ATEs for each of three outcomes
 	m_gts <- lapply(dvs, function(dv) {
-		set.seed(240819)
+		set.seed(240921)
 		att_gt(
 			yname = dv, idname = "fid", tname = "ym_r", gname = "T2_ym",
 			xformla = NULL, data = dt3,
@@ -230,6 +233,7 @@
 		})
 	# use the following code to understand the warning messages (in short, due to unbalanced panel and therefore missingness in certain periods)
 	# subset(dt3, subset=!is.na(Country)) |> summarize(n=n(), .by=c(ym,ym_r, Country)) |> pivot_wider(names_from=Country, values_from=n) |> print(n=Inf)
+	# the parallel trend assumption appears to be hold without covariates; including "size" and "factoryageln" as pre-treatment covariates does not substantially change the results
 
 	for (i in seq_along(dvs)) {
 		### pre-test the parallel assumption
@@ -252,11 +256,43 @@
 	}
 
 
-## moderation
+## TESTING CODES
+	# m <- att_gt(
+	# 	yname = "reportedcompl", idname = "fid", tname = "ym_r", gname = "T2_ym",
+	# 	xformla = ~size+factoryageln, 
+	# 	data = dt3,
+	# 	# xformla = NULL, 
+	# 	# data = subset(dt3, union==0),
+	# 	panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
+	# 	control_group = "nevertreated", #"notyettreated"
+	# 	est_method = "ipw"
+	# 	# est_method = "dr"
+	# 	)
+	# # warnings()
+
+	# # summary(m)
+	# ggdid(m) + theme(axis.text.y=element_text(size=10), axis.text.x=element_text(angle=90, vjust=0.5, hjust=1, size=10))
+
+	# agg.es <- aggte(m, type="dynamic", na.rm=TRUE)
+	# # summary(agg.es)
+	# ggdid(agg.es) + scale_x_continuous(expand=c(0.01,0), n.breaks=10)
+
+	# agg.cs <- aggte(m, type="calendar", na.rm=TRUE)
+	# # summary(agg.cs)
+	# ggdid(agg.cs) + scale_x_continuous(expand=c(0.01,0), guide=guide_axis(angle=90), n.breaks=10)
+
+	# agg.gs <- aggte(m, type="group", na.rm=TRUE)
+	# # summary(agg.gs)
+	# ggdid(agg.gs) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"))
+
+	# agg.simple <- aggte(m, type="simple", na.rm=TRUE)
+	# summary(agg.simple)
+
+	### moderation
 	# mods <- list(
 	# 	dt3_union0 = subset(dt3, union==0), dt3_union1 = subset(dt3, union==1),
 	# 	dt3_mngl = subset(dt3, mng<7), dt3_mngh = subset(dt3, mng>=7),
-	# 	dt3_b1nn = subset(dt3, buyer1FTindex==-2), dt3_b1nr = subset(dt3, buyer1FTindex==-1), dt3_b1l = subset(dt3, buyer1FTindex<29), dt3_b1h = subset(dt3, buyer1FTindex>=29)
+	# 	dt3_b1l = subset(dt3, as.integer(buyer1FTindexband)<=3), dt3_b1h = subset(dt3, as.integer(buyer1FTindexband)<=3)
 	# 	)
 	# # sapply(mods, dim)
 
@@ -291,32 +327,3 @@
 	# 		# ggsave(paste0("DiD_",str_remove(names(mods),"^dt3_")[i],"_",dvs[j],"_group.png"))
 	# 	}
 	# }
-
-
-## TESTING CODES
-	m <- att_gt(
-		yname = "reportedcompl", idname = "fid", tname = "ym_r", gname = "T2_ym",
-		xformla = ~size+factoryageln, data = dt3,
-		panel = TRUE, allow_unbalanced_panel = TRUE, clustervars = NULL,
-		control_group = "nevertreated", #"notyettreated"
-		est_method = "ipw"
-		)
-	# warnings()
-
-	# summary(m)
-	ggdid(m) + theme(axis.text.y=element_text(size=10), axis.text.x=element_text(angle=90, vjust=0.5, hjust=1, size=10))
-
-	agg.es <- aggte(m, type="dynamic", na.rm=TRUE)
-	# summary(agg.es)
-	ggdid(agg.es) + scale_x_continuous(expand=c(0.01,0), n.breaks=10)
-
-	agg.cs <- aggte(m, type="calendar", na.rm=TRUE)
-	# summary(agg.cs)
-	ggdid(agg.cs) + scale_x_continuous(expand=c(0.01,0), guide=guide_axis(angle=90), n.breaks=10)
-
-	agg.gs <- aggte(m, type="group", na.rm=TRUE)
-	# summary(agg.gs)
-	ggdid(agg.gs) + scale_y_discrete(labels=c("Vietnam","Jordan","Indonesia","Haiti","Nicaragua"))
-
-	agg.simple <- aggte(m, type="simple", na.rm=TRUE)
-	summary(agg.simple)
