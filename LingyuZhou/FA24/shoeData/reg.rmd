@@ -1,0 +1,33 @@
+# Linear regression (OLS)
+
+## load data
+
+```{r}
+file.path('D:/git/labor_audit/LingyuZhou/FA24/shoeData')
+extend=read.csv('wages_extend_month.csv')
+charge=read.csv('wages_charge_month.csv')
+extend$conveyor <- as.factor(extend$conveyor)
+charge$conveyor <- as.factor(charge$conveyor)
+ind_vars=c('avg_pay',"avgprice", "cus1price", 'mbpricing', 'mbpay', 'numbuyers','pschange','workers', 'allps')
+
+# extend<-extend[complete.cases(extend[, ind_vars]),]
+extend <- extend[complete.cases(extend[, ind_vars]) & 
+                 !apply(extend[, ind_vars], 1, function(x) any(is.infinite(x) | is.nan(x))), ]
+
+```
+
+## `extend`
+### `avg`~...
+#### w/ conveyor
+```{r}
+m_e_avg_c=glm(avg_pay~avgprice+cus1price+mbpricing+mbpay+numbuyers+pschange+workers+allps+conveyor, data=extend)
+summary(m_e_avg_c)
+```
+#### w/o conveyor
+```{r}
+m_e_avg=glm(avg_pay~avgprice+cus1price+mbpricing+mbpay+numbuyers+pschange+workers+allps, data=extend)
+summary(m_e_avg)
+```
+### `attrition`~...
+#### w/ conveyor
+#### w/o conveyor
