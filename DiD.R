@@ -1,7 +1,7 @@
 ########################################################################
 #		Apply DiD methods to labor audits data
 #		Yuequan
-#		240623
+#		240623|250729
 ########################################################################
 
 
@@ -11,7 +11,7 @@
 	# install.packages("")
 
 	## load R packages
-	lib <- c("haven","tidyverse","plm","did","modelsummary","ggeffects")
+	lib <- c("haven","tidyverse","plm","mediation","did","modelsummary","ggeffects")
 	lapply(lib,require,character.only=TRUE)
 
 	## clear up space
@@ -23,10 +23,13 @@
 	dt <- read_dta("Aug31 data for analysis.dta")
 
 	dt2 <- dt |>
+		filter(dmy(AssesmentDate)<ymd(20200301)) |> # before COVID19
+		drop_na(mngindex13,femalepc,regularwkpc,size,factoryageln) |> # ,union # remove rows w/ missing values
 		mutate(
 			AssesmentDate = dmy(AssesmentDate),
 			fid = as.factor(FactoryAssessedID),
 			ym = floor_date(AssesmentDate, unit="month"),
+			y = year(AssesmentDate),
 			T2 = case_when(
 				Country=="Vietnam" 		& AssesmentDate>=ymd(20160601)	~ "1",
 				Country=="Jordan" 		& AssesmentDate>=ymd(20161101)	~ "1",
@@ -44,13 +47,43 @@
 				Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
 				Country=="Cambodia"		& AssesmentDate>=ymd(20140301)	~ "1",
 				TRUE 																									~ "0"
-				) %>% factor(levels=c("0","1"),labels=c("Before","After")) # robust treatment
-			) |>
-		filter(AssesmentDate<ymd(20200301)) |> # before COVID19
-		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln) # remove rows w/ missing values
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # robust treatment
+			T3 = case_when(
+				Country=="Vietnam" 		& y>=2016	~ "1",
+				Country=="Jordan" 		& y>=2016	~ "1",
+				Country=="Indonesia" 	& y>=2017	~ "1",
+				Country=="Haiti" 			& y>=2017	~ "1",
+				Country=="Nicaragua" 	& y>=2018	~ "1",
+				TRUE 														~ "0"
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # staggered treatment by year
+			T3r = case_when(
+				Country=="Vietnam" 		& y>=2016	~ "1",
+				Country=="Jordan" 		& y>=2016	~ "1",
+				Country=="Indonesia" 	& y>=2017	~ "1",
+				# Country=="Haiti" 			& y>=2017	~ "1",
+				Country=="Nicaragua" 	& y>=2018	~ "1",
+				Country=="Haiti" 			& y>=2010	~ "1",
+				Country=="Cambodia"		& y>=2014	~ "1",
+				TRUE 														~ "0"
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # robust treatment by year
+			T3r2 = case_when(
+				Country %in% c("Haiti", "Cambodia") ~ NA_character_,
+				Country=="Vietnam" 		& y>=2016	~ "1",
+				Country=="Jordan" 		& y>=2016	~ "1",
+				Country=="Indonesia" 	& y>=2017	~ "1",
+				Country=="Nicaragua" 	& y>=2018	~ "1",
+				TRUE 														~ "0"
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")) # robust treatment by year, NA for Haiti and Cambodia
+			)
 	# names(dt2)
 	# with(dt2, table(mngindex13, exclude=NULL))
-	pdt2 <- pdata.frame(dt2, index=c("fid","ym"))
+	# pdt2 <- pdata.frame(dt2, index=c("fid","ym"))
+	pdt2 <- dt2 |>
+		mutate(n = row_number(), .by=c(fid, y)) |>
+		mutate( # treat duplicated fid in the same year as new factories
+			fid2 = if_else(n>1, paste0(FactoryAssessedID, "_", n), as.character(FactoryAssessedID)) %>% as.factor
+			) |>
+		pdata.frame(index=c("fid2","y","Country")) # add Country to the index to allow for clustering
 
 	dt3 <- dt |>
 		mutate(
@@ -78,12 +111,21 @@
 	mos <- c("buyer1FTindexband","RRic2010","mngindex13","union")
 
 ## main
-	fs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2 + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
+	T <- "T3" # set to "T2" or "T3" to switch between treatments
+
+	fss <- sapply(dvs, function(dv) formula(paste0(dv," ~ ", T)))
+	fs <- sapply(dvs, function(dv) formula(paste0(dv," ~ ", T, " + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
 	fms <- lapply(dvs, function(dv) {
 		lapply(mos, function(mo) {
-			formula(paste0(dv, " ~ T2*", mo, " + ", paste(mos[-which(mos==mo)], collapse=" + "), " + femalepc + regularwkpc + size + factoryageln + Cycle"))
+			formula(paste0(dv, " ~ ", T, "*", mo, " + ", paste(mos[-which(mos==mo)], collapse=" + "), " + femalepc + regularwkpc + size + factoryageln + Cycle"))
 			})
 		}) |> unlist(use.names=FALSE)
+
+	mss <- lapply(fss, function(f) plm(f, data=pdt2, effect="twoways", model="within"))
+	lapply(mss, function(m) summary(m, vcov=function(x) vcovHC(x, method="ar")))
+	lapply(mss, function(m) summary(m, vcov=function(x) clubSandwich::vcovCR(x, cluster="Country", type="CR0")))
+	clubSandwich::vcovCR(mss[[3]], cluster="Country", type="CR0")
+	clubSandwich::vcovCR(mss[[3]], cluster="Country", type="CR1")
 
 	ms <- lapply(fs, function(f) plm(f, data=pdt2, effect="twoways", model="within"))
 	# lapply(ms, function(m) summary(m, vcov=function(x) vcovHC(x, method="ar")))
@@ -106,7 +148,7 @@
 
 
 ## regression tables
-	modelsummary(ms, output="main.xlsx", vcov=function(x) plm::vcovHC(x,method="ar"), stars=TRUE)
+	modelsummary(c(mss,ms), output="main_new.xlsx", vcov=function(x) plm::vcovHC(x,method="ar"), stars=TRUE)
 	modelsummary(mms, output="moderators.xlsx", vcov=function(x) plm::vcovHC(x,method="ar"), stars=TRUE)
 
 	modelsummary(rms, output="rmain.xlsx", vcov=function(x) plm::vcovHC(x,method="ar"), stars=TRUE)
