@@ -11,16 +11,31 @@
 	# install.packages("")
 
 	## load R packages
-	lib <- c("haven","tidyverse","plm","mediation","did","modelsummary","ggeffects")
+	lib <- c("haven","tidyverse","plm","did","mediation","modelsummary","writexl","ggeffects")
 	lapply(lib,require,character.only=TRUE)
 
 	## clear up space
 	rm(list=ls())
 
+	## helper functions to extract mediation results
+	.medResult <- function(med_result) {
+		summary_data <- summary(med_result)
+
+		df <- data.frame(
+			Effect = c("ACME", "ADE", "Total Effect", "Prop. Mediated", "Sample Size", "Simulations"),
+			Estimate = c(summary_data$d0, summary_data$z0, summary_data$tau.coef, summary_data$n0, summary_data$nobs, summary_data$sims),
+			CI_Lower = c(summary_data$d0.ci[1], summary_data$z0.ci[1], summary_data$tau.ci[1], summary_data$n0.ci[1], NA, NA),
+			CI_Upper = c(summary_data$d0.ci[2], summary_data$z0.ci[2], summary_data$tau.ci[2], summary_data$n0.ci[2], NA, NA),
+			P_Value = c(summary_data$d0.p, summary_data$z0.p, summary_data$tau.p, summary_data$n0.p, NA, NA)
+		)
+
+		return(df)
+	}
+
 
 
 # read in clean data
-	dt <- read_dta("Aug31 data for analysis.dta")
+	dt <- read_dta("2025 Aug data for analysis.dta")
 
 	dt2 <- dt |>
 		filter(dmy(AssesmentDate)<ymd(20200301)) |> # before COVID19
@@ -55,7 +70,7 @@
 				Country=="Haiti" 			& y>=2017	~ "1",
 				Country=="Nicaragua" 	& y>=2018	~ "1",
 				TRUE 														~ "0"
-				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # staggered treatment by year
+				) %>% as.numeric, # staggered treatment by year
 			T3r = case_when(
 				Country=="Vietnam" 		& y>=2016	~ "1",
 				Country=="Jordan" 		& y>=2016	~ "1",
@@ -80,10 +95,10 @@
 	# pdt2 <- pdata.frame(dt2, index=c("fid","ym"))
 	pdt2 <- dt2 |>
 		mutate(n = row_number(), .by=c(fid, y)) |>
-		mutate( # treat duplicated fid in the same year as new factories
+		mutate(# treat duplicated fid in the same year as new factories
 			fid2 = if_else(n>1, paste0(FactoryAssessedID, "_", n), as.character(FactoryAssessedID)) %>% as.factor
 			) |>
-		pdata.frame(index=c("fid2","y","Country")) # add Country to the index to allow for clustering
+		pdata.frame(index=c("fid2","y")) #,"Country" # add Country to the index to allow for clustering
 
 	dt3 <- dt |>
 		mutate(
@@ -103,6 +118,81 @@
 		drop_na(mngindex13,union,femalepc,regularwkpc,size,factoryageln)
 	# str(dt3$ym); dt3 |> arrange(ym) |> distinct(ym,ym_r) |> filter(ym==201801) |> print(n=Inf) # look up ym_r for the corresponding ym
 	# cannot conduct robustness analysis such as in TWFE because the method excludes units that have no untreated obs (i.e., factories in Haiti and Cambodia will be excluded)
+
+
+
+# Mediation analysis
+	set.seed(250806)
+
+	vars <- c("overallcompl","nondisclosedrt","mngindex13","mngindex8","T3","RRic2010")
+	wdt2 <- map_dfc(vars, ~ Within(pdt2[[.x]], effect = "twoways")) |> set_names(vars)
+
+## mediation
+	med1.fit <- lm(mngindex13 ~ -1 + T3, data=wdt2)
+	out1.fit <- lm(overallcompl ~ -1 + mngindex13 + T3, data=wdt2)
+	med1.out <- mediate(med1.fit, out1.fit, treat = "T3", mediator = "mngindex13", boot = T)
+
+	med2.fit <- lm(mngindex13 ~ -1 + T3, data=wdt2)
+	out2.fit <- lm(nondisclosedrt ~ -1 + mngindex13 + T3, data=wdt2)
+	med2.out <- mediate(med2.fit, out2.fit, treat = "T3", mediator = "mngindex13", boot = T)
+
+	med3.fit <- lm(mngindex8 ~ -1 + T3, data=wdt2)
+	out3.fit <- lm(overallcompl ~ -1 + mngindex8 + T3, data=wdt2)
+	med3.out <- mediate(med3.fit, out3.fit, treat = "T3", mediator = "mngindex8", boot = T)
+
+	med4.fit <- lm(mngindex8 ~ -1 + T3, data=wdt2)
+	out4.fit <- lm(nondisclosedrt ~ -1 + mngindex8 + T3, data=wdt2)
+	med4.out <- mediate(med4.fit, out4.fit, treat = "T3", mediator = "mngindex8", boot = T)
+
+
+## moderated mediation
+	mmed1.fit <- lm(mngindex13 ~ -1 + T3*RRic2010, data=wdt2)
+	mout1.fit <- lm(overallcompl ~ -1 + mngindex13*RRic2010 + T3*RRic2010, data=wdt2)
+	mmed1.out.l <- mediate(mmed1.fit, mout1.fit, treat = "T3", mediator = "mngindex13", covariates = list(RRic2010 = 0), boot = T)
+	mmed1.out.h <- mediate(mmed1.fit, mout1.fit, treat = "T3", mediator = "mngindex13", covariates = list(RRic2010 = 2), boot = T)
+	mmed1.out <- mediate(mmed1.fit, mout1.fit, treat = "T3", mediator = "mngindex13", boot = T)
+	test.modmed(mmed1.out, covariates.1 = list(RRic2010 = 0), covariates.2 = list(RRic2010 = 2))
+
+	mmed2.fit <- lm(mngindex13 ~ -1 + T3*RRic2010, data=wdt2)
+	mout2.fit <- lm(nondisclosedrt ~ -1 + mngindex13*RRic2010 + T3*RRic2010, data=wdt2)
+	mmed2.out.l <- mediate(mmed2.fit, mout2.fit, treat = "T3", mediator = "mngindex13", covariates = list(RRic2010 = 0), boot = T)
+	mmed2.out.h <- mediate(mmed2.fit, mout2.fit, treat = "T3", mediator = "mngindex13", covariates = list(RRic2010 = 2), boot = T)
+	mmed2.out <- mediate(mmed2.fit, mout2.fit, treat = "T3", mediator = "mngindex13", boot = T)
+	test.modmed(mmed2.out, covariates.1 = list(RRic2010 = 0), covariates.2 = list(RRic2010 = 2))
+
+	mmed3.fit <- lm(mngindex8 ~ -1 + T3*RRic2010, data=wdt2)
+	mout3.fit <- lm(overallcompl ~ -1 + mngindex8*RRic2010 + T3*RRic2010, data=wdt2)
+	mmed3.out.l <- mediate(mmed3.fit, mout3.fit, treat = "T3", mediator = "mngindex8", covariates = list(RRic2010 = 0), boot = T)
+	mmed3.out.h <- mediate(mmed3.fit, mout3.fit, treat = "T3", mediator = "mngindex8", covariates = list(RRic2010 = 2), boot = T)
+	mmed3.out <- mediate(mmed3.fit, mout3.fit, treat = "T3", mediator = "mngindex8", boot = T)
+	test.modmed(mmed3.out, covariates.1 = list(RRic2010 = 0), covariates.2 = list(RRic2010 = 2))
+
+	mmed4.fit <- lm(mngindex8 ~ -1 + T3*RRic2010, data=wdt2)
+	mout4.fit <- lm(nondisclosedrt ~ -1 + mngindex8*RRic2010 + T3*RRic2010, data=wdt2)
+	mmed4.out.l <- mediate(mmed4.fit, mout4.fit, treat = "T3", mediator = "mngindex8", covariates = list(RRic2010 = 0), boot = T)
+	mmed4.out.h <- mediate(mmed4.fit, mout4.fit, treat = "T3", mediator = "mngindex8", covariates = list(RRic2010 = 2), boot = T)
+	mmed4.out <- mediate(mmed4.fit, mout4.fit, treat = "T3", mediator = "mngindex8", boot = T)
+	test.modmed(mmed4.out, covariates.1 = list(RRic2010 = 0), covariates.2 = list(RRic2010 = 2))
+
+
+## write results
+	write_xlsx(
+		list(
+			"overall_mng13" = .medResult(med1.out), 
+			"nondisclosed_mng13" = .medResult(med2.out),
+			"overall_mng8" = .medResult(med3.out), 
+			"nondisclosed_mng8" = .medResult(med4.out),
+			"overall_mng13_ml" = .medResult(mmed1.out.l), 
+			"overall_mng13_mh" = .medResult(mmed1.out.h), 
+			"nondisclosed_mng13_ml" = .medResult(mmed2.out.l),
+			"nondisclosed_mng13_mh" = .medResult(mmed2.out.h),
+			"overall_mng8_ml" = .medResult(mmed3.out.l), 
+			"overall_mng8_mh" = .medResult(mmed3.out.h),
+			"nondisclosed_mng8_ml" = .medResult(mmed4.out.l),
+			"nondisclosed_mng8_mh" = .medResult(mmed4.out.h)
+			), 
+		path = "mediation_results.xlsx"
+		)
 
 
 
