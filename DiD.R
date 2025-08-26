@@ -11,7 +11,7 @@
 	# install.packages("")
 
 	## load R packages
-	lib <- c("haven","tidyverse","plm","did","mediation","modelsummary","writexl","ggeffects")
+	lib <- c("haven","writexl","tidyverse","plm","did","mediation","modelsummary","ggeffects")
 	lapply(lib,require,character.only=TRUE)
 
 	## clear up space
@@ -39,7 +39,7 @@
 
 	dt2 <- dt |>
 		filter(dmy(AssesmentDate)<ymd(20200301)) |> # before COVID19
-		drop_na(mngindex13,femalepc,regularwkpc,size,factoryageln) |> # ,union # remove rows w/ missing values
+		drop_na(mngindex13,union) |> #,femalepc,regularwkpc,size,factoryageln # remove rows w/ missing values
 		mutate(
 			AssesmentDate = dmy(AssesmentDate),
 			fid = as.factor(FactoryAssessedID),
@@ -124,7 +124,7 @@
 # Mediation analysis
 	set.seed(250806)
 
-	vars <- c("overallcompl","nondisclosedrt","mngindex13","mngindex8","T3","RRic2010")
+	vars <- c("overallcompl","nondisclosedrt","mngindex13","mngindex8","union","T3","RRic2010")
 	wdt2 <- map_dfc(vars, ~ Within(pdt2[[.x]], effect = "twoways")) |> set_names(vars)
 
 ## mediation
@@ -143,6 +143,14 @@
 	med4.fit <- lm(mngindex8 ~ -1 + T3, data=wdt2)
 	out4.fit <- lm(nondisclosedrt ~ -1 + mngindex8 + T3, data=wdt2)
 	med4.out <- mediate(med4.fit, out4.fit, treat = "T3", mediator = "mngindex8", boot = T)
+
+	med5.fit <- lm(union ~ -1 + T3, data=wdt2)
+	out5.fit <- lm(overallcompl ~ -1 + union + T3, data=wdt2)
+	med5.out <- mediate(med5.fit, out5.fit, treat = "T3", mediator = "union", boot = T)
+
+	med6.fit <- lm(union ~ -1 + T3, data=wdt2)
+	out6.fit <- lm(nondisclosedrt ~ -1 + union + T3, data=wdt2)
+	med6.out <- mediate(med6.fit, out6.fit, treat = "T3", mediator = "union", boot = T)
 
 
 ## moderated mediation
@@ -174,6 +182,19 @@
 	mmed4.out <- mediate(mmed4.fit, mout4.fit, treat = "T3", mediator = "mngindex8", boot = T)
 	test.modmed(mmed4.out, covariates.1 = list(RRic2010 = 0), covariates.2 = list(RRic2010 = 2))
 
+	mmed5.fit <- lm(union ~ -1 + T3*RRic2010, data=wdt2)
+	mout5.fit <- lm(overallcompl ~ -1 + union*RRic2010 + T3*RRic2010, data=wdt2)
+	mmed5.out.l <- mediate(mmed5.fit, mout5.fit, treat = "T3", mediator = "union", covariates = list(RRic2010 = 0), boot = T)
+	mmed5.out.h <- mediate(mmed5.fit, mout5.fit, treat = "T3", mediator = "union", covariates = list(RRic2010 = 2), boot = T)
+	mmed5.out <- mediate(mmed5.fit, mout5.fit, treat = "T3", mediator = "union", boot = T)
+	test.modmed(mmed5.out, covariates.1 = list(RRic2010 = 0), covariates.2 = list(RRic2010 = 2))
+
+	mmed6.fit <- lm(union ~ -1 + T3*RRic2010, data=wdt2)
+	mout6.fit <- lm(nondisclosedrt ~ -1 + union*RRic2010 + T3*RRic2010, data=wdt2)
+	mmed6.out.l <- mediate(mmed6.fit, mout6.fit, treat = "T3", mediator = "union", covariates = list(RRic2010 = 0), boot = T)
+	mmed6.out.h <- mediate(mmed6.fit, mout6.fit, treat = "T3", mediator = "union", covariates = list(RRic2010 = 2), boot = T)
+	mmed6.out <- mediate(mmed6.fit, mout6.fit, treat = "T3", mediator = "union", boot = T)
+	test.modmed(mmed6.out, covariates.1 = list(RRic2010 = 0), covariates.2 = list(RRic2010 = 2))
 
 ## write results
 	write_xlsx(
@@ -182,6 +203,8 @@
 			"nondisclosed_mng13" = .medResult(med2.out),
 			"overall_mng8" = .medResult(med3.out), 
 			"nondisclosed_mng8" = .medResult(med4.out),
+			"overall_union" = .medResult(med5.out),
+			"nondisclosed_union" = .medResult(med6.out),
 			"overall_mng13_ml" = .medResult(mmed1.out.l), 
 			"overall_mng13_mh" = .medResult(mmed1.out.h), 
 			"nondisclosed_mng13_ml" = .medResult(mmed2.out.l),
@@ -189,7 +212,11 @@
 			"overall_mng8_ml" = .medResult(mmed3.out.l), 
 			"overall_mng8_mh" = .medResult(mmed3.out.h),
 			"nondisclosed_mng8_ml" = .medResult(mmed4.out.l),
-			"nondisclosed_mng8_mh" = .medResult(mmed4.out.h)
+			"nondisclosed_mng8_mh" = .medResult(mmed4.out.h),
+			"overall_union_ml" = .medResult(mmed5.out.l),
+			"overall_union_mh" = .medResult(mmed5.out.h),
+			"nondisclosed_union_ml" = .medResult(mmed6.out.l),
+			"nondisclosed_union_mh" = .medResult(mmed6.out.h)
 			), 
 		path = "mediation_results.xlsx"
 		)
