@@ -39,10 +39,10 @@
 
 	dt2 <- dt |>
 		filter(dmy(AssesmentDate)<ymd(20200301)) |> # before COVID19
-		drop_na(mngindex13,union) |> #,femalepc,regularwkpc,size,factoryageln # remove rows w/ missing values
+		drop_na(mngindex13,union) |> # ,femalepc,regularwkpc,size,factoryageln # remove rows w/ missing values
 		mutate(
-			AssesmentDate = dmy(AssesmentDate),
 			fid = as.factor(FactoryAssessedID),
+			AssesmentDate = dmy(AssesmentDate),
 			ym = floor_date(AssesmentDate, unit="month"),
 			y = year(AssesmentDate),
 			T2 = case_when(
@@ -53,16 +53,16 @@
 				Country=="Nicaragua" 	& AssesmentDate>=ymd(20180101)	~ "1",
 				TRUE 																									~ "0"
 				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # staggered treatment
-			T2r = case_when(
-				Country=="Vietnam" 		& AssesmentDate>=ymd(20160601)	~ "1",
-				Country=="Jordan" 		& AssesmentDate>=ymd(20161101)	~ "1",
-				Country=="Indonesia" 	& AssesmentDate>=ymd(20170101)	~ "1",
-				# Country=="Haiti" 			& AssesmentDate>=ymd(20170701)	~ "1",
-				Country=="Nicaragua" 	& AssesmentDate>=ymd(20180101)	~ "1",
-				Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
-				Country=="Cambodia"		& AssesmentDate>=ymd(20140301)	~ "1",
-				TRUE 																									~ "0"
-				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # robust treatment
+			# T2r = case_when(
+			# 	Country=="Vietnam" 		& AssesmentDate>=ymd(20160601)	~ "1",
+			# 	Country=="Jordan" 		& AssesmentDate>=ymd(20161101)	~ "1",
+			# 	Country=="Indonesia" 	& AssesmentDate>=ymd(20170101)	~ "1",
+			# 	# Country=="Haiti" 			& AssesmentDate>=ymd(20170701)	~ "1",
+			# 	Country=="Nicaragua" 	& AssesmentDate>=ymd(20180101)	~ "1",
+			# 	Country=="Haiti" 			& AssesmentDate>=ymd(20100101)	~ "1",
+			# 	Country=="Cambodia"		& AssesmentDate>=ymd(20140301)	~ "1",
+			# 	TRUE 																									~ "0"
+			# 	) %>% factor(levels=c("0","1"),labels=c("Before","After")), # robust treatment
 			T3 = case_when(
 				Country=="Vietnam" 		& y>=2016	~ "1",
 				Country=="Jordan" 		& y>=2016	~ "1",
@@ -70,17 +70,17 @@
 				Country=="Haiti" 			& y>=2017	~ "1",
 				Country=="Nicaragua" 	& y>=2018	~ "1",
 				TRUE 														~ "0"
-				) %>% as.numeric, # staggered treatment by year
-			T3r = case_when(
-				Country=="Vietnam" 		& y>=2016	~ "1",
-				Country=="Jordan" 		& y>=2016	~ "1",
-				Country=="Indonesia" 	& y>=2017	~ "1",
-				# Country=="Haiti" 			& y>=2017	~ "1",
-				Country=="Nicaragua" 	& y>=2018	~ "1",
-				Country=="Haiti" 			& y>=2010	~ "1",
-				Country=="Cambodia"		& y>=2014	~ "1",
-				TRUE 														~ "0"
-				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # robust treatment by year
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # staggered treatment by year
+			# T3r = case_when(
+			# 	Country=="Vietnam" 		& y>=2016	~ "1",
+			# 	Country=="Jordan" 		& y>=2016	~ "1",
+			# 	Country=="Indonesia" 	& y>=2017	~ "1",
+			# 	# Country=="Haiti" 			& y>=2017	~ "1",
+			# 	Country=="Nicaragua" 	& y>=2018	~ "1",
+			# 	Country=="Haiti" 			& y>=2010	~ "1",
+			# 	Country=="Cambodia"		& y>=2014	~ "1",
+			# 	TRUE 														~ "0"
+			# 	) %>% factor(levels=c("0","1"),labels=c("Before","After")), # robust treatment by year
 			T3r2 = case_when(
 				Country %in% c("Haiti", "Cambodia") ~ NA_character_,
 				Country=="Vietnam" 		& y>=2016	~ "1",
@@ -88,7 +88,16 @@
 				Country=="Indonesia" 	& y>=2017	~ "1",
 				Country=="Nicaragua" 	& y>=2018	~ "1",
 				TRUE 														~ "0"
-				) %>% factor(levels=c("0","1"),labels=c("Before","After")) # robust treatment by year, NA for Haiti and Cambodia
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # robust treatment by year, NA for Haiti and Cambodia
+			T3r3 = case_when(
+				Country %in% c("Bangladesh", "Cambodia") ~ NA_character_,
+				Country=="Vietnam" 		& y>=2016	~ "1",
+				Country=="Jordan" 		& y>=2016	~ "1",
+				Country=="Indonesia" 	& y>=2017	~ "1",
+				Country=="Haiti" 			& y>=2017	~ "1",
+				Country=="Nicaragua" 	& y>=2018	~ "1",
+				TRUE 														~ "0"
+				) %>% factor(levels=c("0","1"),labels=c("Before","After")), # robust treatment by year, NA for Bangladesh and Cambodia
 			)
 	# names(dt2)
 	# with(dt2, table(mngindex13, exclude=NULL))
@@ -227,6 +236,63 @@
 	dvs <- c("reportedcompl","similarCPcompl","distantCPcompl")
 	mos <- c("buyer1FTindexband","RRic2010","mngindex13","union")
 
+
+## event study
+	L <- 3; F <- 3
+
+	dt2.es <- as.data.frame(pdt2) |>
+		mutate(
+			cdgt = case_when(
+				Country %in% c("Bangladesh", "Cambodia") ~ NA_real_,
+				Country=="Vietnam" 		~ 2016,
+				Country=="Jordan" 		~ 2016,
+				Country=="Indonesia" 	~ 2017,
+				Country=="Haiti" 			~ 2017,
+				Country=="Nicaragua" 	~ 2018,
+				TRUE 									~ 0 # never treated
+			)
+		)
+
+	Dtl <- sapply(-L:F, function(l) {
+		dtl <- 1*( (dt2.es$y == dt2.es$cdgt + l) & (dt2.es$cdgt > 0) )
+		dtl
+	}) |> as.data.frame()
+
+	colnames(Dtl) <- c(paste0("Dtmin", L:1), paste0("Dt", 0:F))
+	dt2.es <- cbind(dt2.es, Dtl)
+
+	es.dv <- c("overallcompl","nondisclosedrt")
+	
+	es.f <- lapply(es.dv, function(x) {
+		formula(paste0(x,"~ Dtmin3 + Dtmin2 + Dt0 + Dt1 + Dt2 + Dt3"))
+	})
+	
+	es.m <- lapply(es.f, function(x) plm(x, data = dt2.es, model = "within", effect = "twoways", index=c("fid2","y")))
+
+	idx.pre <- 1:L-1    # pre-treatment periods (excluding omitted -1)
+	idx.post <- L:(L+F)  # treatment and post-treatment periods
+	
+	es.dt <- lapply(seq_along(es.m), function(i) {
+		coefs1 <- coef(es.m[[i]])[1:(L+F)]
+		ses1 <- summary(es.m[[i]], vcov=function(y) vcovHC(y, method="ar"))$coefficients[,2][1:(L+F)]
+		coefs <- c(coefs1[idx.pre], 0, coefs1[idx.post])  # add 0 for omitted period
+		ses <- c(ses1[idx.pre], 0, ses1[idx.post])        # add 0 for omitted period
+		exposure <- -L:F
+		cmat <- data.frame(coefs=coefs, ses=ses, exposure=exposure, m=es.dv[[i]])
+	}) %>% do.call(rbind,.) %>% mutate(m=ifelse(m=="overallcompl","Overall Compliance","Non-disclosed Compliance"))
+
+	rect <- data.frame(xmin=-(L+.1), xmax=-0.9, ymin=-Inf, ymax=Inf)
+	ggplot(es.dt, aes(y=coefs, x=exposure)) +
+		geom_line(color="#00274C") + geom_point(size=1.5) +
+		geom_hline(yintercept=0, linetype="dashed") +
+		geom_errorbar(aes(ymin=(coefs-1.96*ses), ymax=(coefs+1.96*ses)), width=0.2) +
+		facet_grid(.~m) +
+		theme_bw() +
+		labs(x="Exposure", y="Coefficients") +
+		scale_x_continuous(breaks=-L:F, minor_breaks=NULL) +
+		geom_rect(data=rect, inherit.aes=FALSE, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax), color="transparent", fill="#FFCB05", alpha=0.2)
+
+
 ## main
 	T <- "T3" # set to "T2" or "T3" to switch between treatments
 
@@ -251,17 +317,17 @@
 
 
 ## robust (recoding Cambodia and Haiti as treatment)
-	rfs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2r + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
-	rfms <- lapply(dvs, function(dv) {
-		lapply(mos, function(mo) {
-			formula(paste0(dv, " ~ T2r*", mo, " + ", paste(mos[-which(mos==mo)], collapse=" + "), " + femalepc + regularwkpc + size + factoryageln + Cycle"))
-			})
-		}) |> unlist(use.names=FALSE)
+	# rfs <- sapply(dvs, function(dv) formula(paste0(dv," ~ T2r + buyer1FTindexband + RRic2010 + mngindex13 + union + femalepc + regularwkpc + size + factoryageln + Cycle")))
+	# rfms <- lapply(dvs, function(dv) {
+	# 	lapply(mos, function(mo) {
+	# 		formula(paste0(dv, " ~ T2r*", mo, " + ", paste(mos[-which(mos==mo)], collapse=" + "), " + femalepc + regularwkpc + size + factoryageln + Cycle"))
+	# 		})
+	# 	}) |> unlist(use.names=FALSE)
 
-	rms <- lapply(rfs, function(rf) plm(rf, data=pdt2, effect="twoways", model="within"))
-	# lapply(rms[1:4], function(rm) summary(rm, vcov=function(x) vcovHC(x, method="ar")))
-	rmms <- lapply(rfms, function(rfm) plm(rfm, data=pdt2, effect="twoways", model="within"))
-	# lapply(rmms[3], function(rmm) summary(rmm, vcov=function(x) vcovHC(x, method="ar")))
+	# rms <- lapply(rfs, function(rf) plm(rf, data=pdt2, effect="twoways", model="within"))
+	# # lapply(rms[1:4], function(rm) summary(rm, vcov=function(x) vcovHC(x, method="ar")))
+	# rmms <- lapply(rfms, function(rfm) plm(rfm, data=pdt2, effect="twoways", model="within"))
+	# # lapply(rmms[3], function(rmm) summary(rmm, vcov=function(x) vcovHC(x, method="ar")))
 
 
 ## regression tables
