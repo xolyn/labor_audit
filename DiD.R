@@ -261,7 +261,7 @@
 	colnames(Dtl) <- c(paste0("Dtmin", L:1), paste0("Dt", 0:F))
 	dt2.es <- cbind(dt2.es, Dtl)
 
-	es.dv <- c("overallcompl","nondisclosedrt")
+	es.dv <- c("overallcompl","reportedcompl","nondisclosedrt")
 	
 	es.f <- lapply(es.dv, function(x) {
 		formula(paste0(x,"~ Dtmin3 + Dtmin2 + Dt0 + Dt1 + Dt2 + Dt3"))
@@ -279,7 +279,7 @@
 		ses <- c(ses1[idx.pre], 0, ses1[idx.post])        # add 0 for omitted period
 		exposure <- -L:F
 		cmat <- data.frame(coefs=coefs, ses=ses, exposure=exposure, m=es.dv[[i]])
-	}) %>% do.call(rbind,.) %>% mutate(m=ifelse(m=="overallcompl","Overall Compliance","Non-disclosed Compliance"))
+	}) %>% do.call(rbind,.) %>% mutate(m=fct_recode(m, "Overall Compliance" = "overallcompl", "Reported Compliance" = "reportedcompl", "Non-disclosed Compliance" = "nondisclosedrt") %>% fct_inorder())
 
 	rect <- data.frame(xmin=-(L+.1), xmax=-0.9, ymin=-Inf, ymax=Inf)
 	ggplot(es.dt, aes(y=coefs, x=exposure)) +
